@@ -116,6 +116,7 @@ The application features a built-in auto-scheduler that checks for playlists eve
 *   **Loudness:** The streaming output is automatically normalized (Master Gain -2.5dB) to ensure safe headroom and professional loudness levels.
 
 ---
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA)
 ---
 
 # Руководство пользователя P-Layer (Russian)

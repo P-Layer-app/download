@@ -4,7 +4,7 @@
 
 ![Screenshot](screen1.png)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA) 📡 Follow P-Layer on X: [@p_layer_app](https://x.com/p_layer_app)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA)
 ---
 
 ## 1. Quick Start & Settings
@@ -117,6 +117,7 @@ The application features a built-in auto-scheduler that checks for playlists eve
 *   **Loudness:** The streaming output is automatically normalized (Master Gain -2.5dB) to ensure safe headroom and professional loudness levels.
 
 ---
+📡 Follow P-Layer on X: [@p_layer_app](https://x.com/p_layer_app)
 ---
 
 # Руководство пользователя P-Layer (Russian)

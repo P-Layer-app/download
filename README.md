@@ -4,7 +4,7 @@
 
 ![Screenshot](screen1.png)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA) 📡 Follow P-Layer on X: [@p_layer_app](https://x.com/p_layer_app)
 ---
 
 ## 1. Quick Start & Settings

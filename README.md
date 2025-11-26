@@ -1,6 +1,6 @@
 # P-Layer User Manual
 
-**P-Layer** is a professional broadcasting automation application designed for radio stations and streamers. It allows you to create playlists, schedule broadcasts, and manage audio streaming (Icecast/Shoutcast) with ease.
+**P-Layer** is a professional broadcasting automation application designed for small FM stations, community radio, student & hospital radio, and hobby internet stations. It allows you to create playlists, schedule broadcasts, and manage audio streaming (Icecast/Shoutcast) with ease.
 
 ![Screenshot](screen1.png)
 

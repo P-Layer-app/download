@@ -116,6 +116,17 @@ The application features a built-in auto-scheduler that checks for playlists eve
 *   **Keep-Alive:** The audio engine generates a silent carrier signal to keep the connection alive even during silence (between a command and a track), preventing server disconnects.
 *   **Loudness:** The streaming output is automatically normalized (Master Gain -2.5dB) to ensure safe headroom and professional loudness levels.
 
+*   **Supported macOS Systems**
+P-Layer is currently in active alpha testing.
+The application runs on the following macOS systems:
+
+– Macs with Intel processors
+– Macs with Apple M1
+– Macs with Apple M2
+
+On devices with Apple M3 processors, the current alpha build may not launch due to new system-level security restrictions.
+Full M3 support will be added in future releases.
+
 ---
 
 

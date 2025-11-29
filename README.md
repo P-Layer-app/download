@@ -6,6 +6,9 @@
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA)
 ---
+## Version
+Current version: **0.1.1**
+Updated: 2025-11-29
 
 ## 1. Quick Start & Settings
 

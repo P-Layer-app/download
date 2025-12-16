@@ -1,8 +1,7 @@
-# About
-P⏵Layer User Manual
 
-**About
-P⏵Layer** Free broadcast automation for small FM stations, community radio, student & hospital radio, and hobby internet stations — now on macOS
+**About P⏵Layer** 
+
+Free broadcast automation for small FM stations, community radio, student & hospital radio, and hobby internet stations — now on macOS
 
 ![Screenshot](screen1.png)
 

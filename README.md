@@ -4,8 +4,349 @@
 
 ![Screenshot](screen1.png)
 
+![Screenshot](screen2.png)
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA)
 ---
+
+## **1. Quick Start & Settings**
+
+Before using P-Layer, open **Settings** from the left sidebar and configure the application.
+
+---
+
+### **General Tab**
+
+* **Playlist Folder**
+  Select the folder where scheduled playlists (**.m3u**) are stored.
+  This folder is required for the **Scheduler** to work.
+* **Crossfade Duration**
+  Used only when no Fade Out marker exists on a track.
+  Defines how long the transition lasts (in seconds).
+* **Smart Crossfade**
+  * **Silence Threshold** — volume considered silence
+  * **Silence Window** — how long silence must last to trigger a transition
+  * **Only in last (sec)** — limits detection to the track ending
+* **Compressor Mode**
+  * Off
+  * Soft
+  * Punchy (recommended for broadcast sound)
+
+---
+
+### **Categories Tab (Required)**
+
+To use the **Library**, at least one category must be created.
+
+1. **Enter a ****Category Name**
+2. Choose a **Color**
+3. Select a **Folder** containing audio files
+4. Confirm with ✔
+
+Files from this folder will appear in the Library under **Files**.
+
+> Recommended structure:
+
+> One main music folder → separate subfolders per category.
+
+---
+
+### **Streaming Tab**
+
+Configure Icecast or Shoutcast streaming:
+
+* Enable streaming
+* Host, Port, Mountpoint, Password
+* STREAM button shows live status:
+  * OFF
+  * CONNECTING
+  * ON
+  * ERROR
+
+---
+
+### **Audio Processing & Ducking**
+
+* Master output is normalized for safe headroom
+* **Ducking** automatically reduces music volume during voice tracks
+* Ducking parameters are configurable:
+  * **Ducking Amount** — how much music is reduced
+  * **Release Time** — how fast music restores after voice
+
+---
+
+## **2. Library & Playlist Management**
+
+### **Library Panel**
+
+Located on the right side. Contains two tabs:
+
+1. **Files** — audio files grouped by categories
+2. **Commands** — automation commands
+
+Search field filters tracks in real time.
+
+---
+
+### **Playlist Control**
+
+* Drag tracks from Library or from Finder
+* Reorder by drag & drop
+* Remove with ✖
+* **Clear Playlist** removes all items
+
+Tracks added from Finder appear uncategorized.
+
+---
+
+### **Queue Timers & Indicators**
+
+* **Queue Duration**
+  Displayed when playback is stopped. Shows total remaining queue time.
+* **Air Time**
+  Each track card shows calculated on-air time.
+
+---
+
+## **2.1 Track Markers (Audio Markup)**
+
+P-Layer supports **precise audio markers** defined per track.
+
+Markers are edited in the **Library** and saved automatically.
+
+---
+
+### **🎬 Intro Marker**
+
+Defines the end of the intro section.
+
+Used for:
+
+* Intro countdown timer in the player
+* Voice-over timing
+
+When present:
+
+* An **Intro Countdown** appears in the player
+* The counter disappears automatically when intro ends
+
+---
+
+### **⏭ Fade Out Marker**
+
+**Defines the ** **exact transition point** **.**
+
+* **The next track starts ****precisely at this moment**
+* No artificial delay or fade-in is added
+* Crossfade duration is ignored
+
+> Fade Out markers are the primary transition mechanism.
+
+---
+
+### **Marker Logic**
+
+* Markers are measured from the **actual track start**
+* They are **not affected** by ducking or crossfade
+* All timers and progress indicators respect markers
+
+---
+
+### **Visual Indicators**
+
+* Marker icons appear on track cards
+* Intro counter appears only if Intro marker exists
+
+---
+
+## **3. Automation Commands**
+
+Commands are zero-duration playlist items.
+
+Available commands:
+
+* **Start Stream**
+* **Stop Stream**
+
+Behavior:
+
+* Executes instantly
+* Playback continues immediately
+
+Commands are saved inside **.m3u** playlists.
+
+---
+
+## **4. Scheduler**
+
+The scheduler checks for playlists every 10 seconds.
+
+### **Scheduling a Playlist**
+
+1. Build a playlist
+2. Save it as:
+   YYYY-MM-DD_HH-MM.m3u
+3. When system time matches — playlist loads automatically
+
+---
+
+### **Auto-Loading Behavior**
+
+* If playing: seamless transition at marker or crossfade
+* If stopped: playlist loads and starts automatically
+
+---
+
+## **5. On-Air Control**
+
+* Play / Pause / Next / Eject
+* STREAM button controls broadcasting
+* No silence gaps — keep-alive signal is used internally
+
+---
+
+### **Technical Notes**
+
+* Supported formats: MP3, WAV, FLAC, M4A
+* Recommended sample rate: **44.1 kHz**
+* Tracks with incorrect sample rate show warning ⚠️
+
+---
+
+---
+
+# **Руководство пользователя P-Layer (RU)**
+
+**P-Layer** — профессиональное приложение автоматизации эфирного вещания для радио и стриминга.
+
+---
+
+## **1. Быстрый старт и настройки**
+
+Откройте **Settings** в левом меню и выполните настройку.
+
+---
+
+### **General (Общие)**
+
+* **Playlist Folder** — папка с расписанием
+* **Crossfade Duration** — используется только при отсутствии маркера Fade Out
+* **Smart Crossfade** — интеллектуальный переход по тишине
+* **Compressor Mode** — Off / Soft / Punchy
+
+---
+
+### **Categories (Обязательно)**
+
+Для работы библиотеки необходимо создать хотя бы одну категорию.
+
+1. Имя
+2. Цвет
+3. Папка с аудио
+4. Подтвердить ✔
+
+---
+
+### **Streaming**
+
+Настройка Icecast / Shoutcast.
+
+---
+
+### **Обработка звука и дакинг**
+
+* Автоматическая нормализация
+* **Дакинг** приглушает музыку под голос
+* Настройки:
+  * Глубина дакинга
+  * Скорость восстановления
+
+---
+
+## **2. Библиотека и плейлист**
+
+### **Library**
+
+Правая панель:
+
+* Files — аудио
+* Commands — команды автоматизации
+
+---
+
+### **Управление плейлистом**
+
+* Drag & drop
+* Сортировка
+* Очистка
+
+---
+
+### **Таймеры**
+
+* **Queue Duration** — суммарное время очереди
+* **Air Time** — расчёт выхода трека в эфир
+
+---
+
+## **2.1 Аудио-разметка треков (Markers)**
+
+P-Layer поддерживает точную разметку воспроизведения.
+
+---
+
+### **🎬 Маркер Intro**
+
+* Определяет конец вступления
+* Включает счётчик интро
+* Используется для войсов
+
+---
+
+### **⏭ Маркер Fade Out**
+
+* Определяет точку перехода
+* Следующий трек стартует **строго в этой точке**
+* Crossfade игнорируется
+
+---
+
+### **Логика**
+
+* Отсчёт от реального старта
+* Не зависит от дакинга
+* Таймеры и прогресс-бар следуют маркерам
+
+---
+
+## **3. Команды**
+
+* Start Stream
+* Stop Stream
+
+Выполняются мгновенно и сохраняются в **.m3u**.
+
+---
+
+## **4. Планировщик**
+
+* Проверка каждые 10 секунд
+* **Формат имени: **YYYY-MM-DD_HH-MM.m3u
+
+---
+
+## **5. Управление эфиром**
+
+* Кнопки плеера
+* STREAM — ручное управление стримом
+* Нет пауз между элементами
+
+---
+
+## **Примечания**
+
+* Поддерживаемые форматы: MP3, WAV, FLAC, M4A
+* Рекомендуемая частота: **44.1 kHz**
 
 ## 1. Quick Start & Settings
 

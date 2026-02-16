@@ -1,593 +1,384 @@
+# P-Layer User Manual
 
-**About P⏵Layer** 
-
-Free broadcast automation for small FM stations, community radio, student & hospital radio, and hobby internet stations — now on macOS
-
-![Screenshot](screen1.png)
-
-![Screenshot](screen2.png)
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G01P2DJA)
----
-
-## **1. Quick Start & Settings**
-
-Before using P-Layer, open **Settings** from the left sidebar and configure the application.
+P-Layer is a professional broadcast automation application designed for radio stations, community radio, and streamers. It provides precise playlist control, audio processing, scheduling, streaming (Icecast/Shoutcast), and integrated Voice Tracking.
 
 ---
-
-### **General Tab**
-
-* **Playlist Folder**
-  Select the folder where scheduled playlists (**.m3u**) are stored.
-  This folder is required for the **Scheduler** to work.
-* **Crossfade Duration**
-  Used only when no Fade Out marker exists on a track.
-  Defines how long the transition lasts (in seconds).
-* **Smart Crossfade**
-  * **Silence Threshold** — volume considered silence
-  * **Silence Window** — how long silence must last to trigger a transition
-  * **Only in last (sec)** — limits detection to the track ending
-* **Compressor Mode**
-  * Off
-  * Soft
-  * Punchy (recommended for broadcast sound)
-
----
-
-### **Categories Tab (Required)**
-
-To use the **Library**, at least one category must be created.
-
-1. **Enter a ****Category Name**
-2. Choose a **Color**
-3. Select a **Folder** containing audio files
-4. Confirm with ✔
-
-Files from this folder will appear in the Library under **Files**.
-
-> Recommended structure:
-
-> One main music folder → separate subfolders per category.
-
----
-
-### **Streaming Tab**
-
-Configure Icecast or Shoutcast streaming:
-
-* Enable streaming
-* Host, Port, Mountpoint, Password
-* STREAM button shows live status:
-  * OFF
-  * CONNECTING
-  * ON
-  * ERROR
-
----
-
-### **Audio Processing & Ducking**
-
-* Master output is normalized for safe headroom
-* **Ducking** automatically reduces music volume during voice tracks
-* Ducking parameters are configurable:
-  * **Ducking Amount** — how much music is reduced
-  * **Release Time** — how fast music restores after voice
-
----
-
-## **2. Library & Playlist Management**
-
-### **Library Panel**
-
-Located on the right side. Contains two tabs:
-
-1. **Files** — audio files grouped by categories
-2. **Commands** — automation commands
-
-Search field filters tracks in real time.
-
----
-
-### **Playlist Control**
-
-* Drag tracks from Library or from Finder
-* Reorder by drag & drop
-* Remove with ✖
-* **Clear Playlist** removes all items
-
-Tracks added from Finder appear uncategorized.
-
----
-
-### **Queue Timers & Indicators**
-
-* **Queue Duration**
-  Displayed when playback is stopped. Shows total remaining queue time.
-* **Air Time**
-  Each track card shows calculated on-air time.
-
----
-
-## **2.1 Track Markers (Audio Markup)**
-
-P-Layer supports **precise audio markers** defined per track.
-
-Markers are edited in the **Library** and saved automatically.
-
----
-
-### **🎬 Intro Marker**
-
-Defines the end of the intro section.
-
-Used for:
-
-* Intro countdown timer in the player
-* Voice-over timing
-
-When present:
-
-* An **Intro Countdown** appears in the player
-* The counter disappears automatically when intro ends
-
----
-
-### **⏭ Fade Out Marker**
-
-**Defines the ** **exact transition point** **.**
-
-* **The next track starts ****precisely at this moment**
-* No artificial delay or fade-in is added
-* Crossfade duration is ignored
-
-> Fade Out markers are the primary transition mechanism.
-
----
-
-### **Marker Logic**
-
-* Markers are measured from the **actual track start**
-* They are **not affected** by ducking or crossfade
-* All timers and progress indicators respect markers
-
----
-
-### **Visual Indicators**
-
-* Marker icons appear on track cards
-* Intro counter appears only if Intro marker exists
-
----
-
-## **3. Automation Commands**
-
-Commands are zero-duration playlist items.
-
-Available commands:
-
-* **Start Stream**
-* **Stop Stream**
-
-Behavior:
-
-* Executes instantly
-* Playback continues immediately
-
-Commands are saved inside **.m3u** playlists.
-
----
-
-## **4. Scheduler**
-
-The scheduler checks for playlists every 10 seconds.
-
-### **Scheduling a Playlist**
-
-1. Build a playlist
-2. Save it as:
-   YYYY-MM-DD_HH-MM.m3u
-3. When system time matches — playlist loads automatically
-
----
-
-### **Auto-Loading Behavior**
-
-* If playing: seamless transition at marker or crossfade
-* If stopped: playlist loads and starts automatically
-
----
-
-## **5. On-Air Control**
-
-* Play / Pause / Next / Eject
-* STREAM button controls broadcasting
-* No silence gaps — keep-alive signal is used internally
-
----
-
-### **Technical Notes**
-
-* Supported formats: MP3, WAV, FLAC, M4A
-* Recommended sample rate: **44.1 kHz**
-* Tracks with incorrect sample rate show warning ⚠️
-
----
-
----
-
-# **Руководство пользователя P-Layer (RU)**
-
-**P-Layer** — профессиональное приложение автоматизации эфирного вещания для радио и стриминга.
-
----
-
-## **1. Быстрый старт и настройки**
-
-Откройте **Settings** в левом меню и выполните настройку.
-
----
-
-### **General (Общие)**
-
-* **Playlist Folder** — папка с расписанием
-* **Crossfade Duration** — используется только при отсутствии маркера Fade Out
-* **Smart Crossfade** — интеллектуальный переход по тишине
-* **Compressor Mode** — Off / Soft / Punchy
-
----
-
-### **Categories (Обязательно)**
-
-Для работы библиотеки необходимо создать хотя бы одну категорию.
-
-1. Имя
-2. Цвет
-3. Папка с аудио
-4. Подтвердить ✔
-
----
-
-### **Streaming**
-
-Настройка Icecast / Shoutcast.
-
----
-
-### **Обработка звука и дакинг**
-
-* Автоматическая нормализация
-* **Дакинг** приглушает музыку под голос
-* Настройки:
-  * Глубина дакинга
-  * Скорость восстановления
-
----
-
-## **2. Библиотека и плейлист**
-
-### **Library**
-
-Правая панель:
-
-* Files — аудио
-* Commands — команды автоматизации
-
----
-
-### **Управление плейлистом**
-
-* Drag & drop
-* Сортировка
-* Очистка
-
----
-
-### **Таймеры**
-
-* **Queue Duration** — суммарное время очереди
-* **Air Time** — расчёт выхода трека в эфир
-
----
-
-## **2.1 Аудио-разметка треков (Markers)**
-
-P-Layer поддерживает точную разметку воспроизведения.
-
----
-
-### **🎬 Маркер Intro**
-
-* Определяет конец вступления
-* Включает счётчик интро
-* Используется для войсов
-
----
-
-### **⏭ Маркер Fade Out**
-
-* Определяет точку перехода
-* Следующий трек стартует **строго в этой точке**
-* Crossfade игнорируется
-
----
-
-### **Логика**
-
-* Отсчёт от реального старта
-* Не зависит от дакинга
-* Таймеры и прогресс-бар следуют маркерам
-
----
-
-## **3. Команды**
-
-* Start Stream
-* Stop Stream
-
-Выполняются мгновенно и сохраняются в **.m3u**.
-
----
-
-## **4. Планировщик**
-
-* Проверка каждые 10 секунд
-* **Формат имени: **YYYY-MM-DD_HH-MM.m3u
-
----
-
-## **5. Управление эфиром**
-
-* Кнопки плеера
-* STREAM — ручное управление стримом
-* Нет пауз между элементами
-
----
-
-## **Примечания**
-
-* Поддерживаемые форматы: MP3, WAV, FLAC, M4A
-* Рекомендуемая частота: **44.1 kHz**
 
 ## 1. Quick Start & Settings
 
-Before you begin, configure the application by clicking the **Settings** button in the left sidebar.
+Open Settings from the left sidebar before first use.
+
+---
 
 ### General Tab
-*   **Playlist Folder:** Click "Select Playlist Folder" to choose the directory where your playlists will be stored. This is critical for the **Scheduler** to function.
-*   **Crossfade duration:** The duration of the smooth transition between tracks (in seconds).
-*   **Smart Crossfade:**
-    *   *Silence Threshold:* The volume level considered as silence.
-    *   *Silence Window:* How long silence must persist to trigger a transition.
-    *   *Smart Crossfade only in last (sec):* Restricts smart transitions to the end of the track to prevent false positives during quiet parts of a song.
-*   **Compressor mode:** Audio processing mode (Soft, Punchy, or Off). "Punchy" is recommended for a radio-like sound.
 
-### Categories Tab (Mandatory)
-To use the **Library**, you must configure at least one category.
-1.  Enter a **Category Name** (e.g., "Music", "Jingles").
-2.  Select a **Color** from the palette.
-3.  Click **Select Folder** to choose the directory on your computer containing your audio files for this category.
-4.  Click the **Checkmark (✔)** button to save.
-*The files from this folder will now appear in the "Library" panel under the "Files" tab.*
+• Playlist Folder
+Select the folder where scheduled playlists (.m3u) are stored.
+Required for Scheduler.
 
-> **Tip:** It is recommended to create one main folder for your music base (e.g., "P-Layer Music"). Inside it, create separate subfolders for each category (e.g., "Hits", "Gold", "Jingles"), and then connect these specific subfolders in the Category settings.
+• Crossfade Duration
+Used only if a track has no Fade Out marker.
+
+• Smart Crossfade
+
+- Silence Threshold
+- Silence Window
+- Only in last (sec)
+
+• Compressor Mode
+
+- Off
+- Soft
+- Punchy (recommended for broadcast sound)
+
+---
+
+### Categories Tab (Required)
+
+At least one category must be created for Library to function.
+
+1. Enter Category Name
+2. Choose Color
+3. Select Folder with audio files
+4. Confirm ✔
+
+Files from that folder will appear in the Library.
+
+Recommended structure:
+One main music folder → subfolders per category.
+
+---
+
+### Voice Tracking (New)
+
+Voice Tracking allows automatic voice-over playback inside track intros or transitions.
+
+Configuration:
+
+• In Categories settings, enable the checkbox:
+  "Use for Voice Tracking"
+
+Any track in a category marked as Voice Tracking is treated as a Voice Track (VT).
+
+Voice Track Playback Logic:
+
+When a Voice Track is placed between two music tracks:
+
+1. If the next track has an Intro marker and its intro duration is greater than or equal to the Voice Track length →Voice Track plays entirely inside the next track's intro.
+2. If the next track has an Intro marker but its intro is shorter than the Voice Track →Voice Track starts on the previous track’s tail so that it ends exactly at the end of the next track’s intro.
+3. If the next track has no Intro marker (intro = 0) →
+   Voice Track starts on the previous track’s tail and ends exactly at the beginning (0 point) of the next track.
+
+All timing is calculated strictly by playback counters (elapsed / remaining).
+No artificial delays are used.
+
+Ducking:
+
+• Music volume is automatically reduced during Voice Track playback.
+• Music restores after Voice Track ends.
+• Ducking depth and release time are configurable in Audio Processing settings.
+
+---
 
 ### Streaming Tab
-Enter your Icecast or Shoutcast server details here:
-*   **Enable streaming:** Master switch to allow broadcasting.
-*   **Server Settings:** Host, Port, Mountpoint, Password, etc.
-*   Once configured, the application is ready to broadcast.
+
+Configure Icecast or Shoutcast:
+
+• Enable Streaming
+• Host
+• Port
+• Mountpoint
+• Password
+
+STREAM button states:
+• OFF
+• CONNECTING
+• ON
+• ERROR
+
+---
+
+### Audio Processing & Ducking
+
+• Master output normalization
+• Automatic ducking during Voice Tracks
+• Adjustable Ducking Amount
+• Adjustable Release Time
 
 ---
 
 ## 2. Library & Playlist Management
 
-### Library
-The right-side panel contains your library with two tabs (switchable at the top):
-1.  **Files:** Displays your audio files sorted by categories (folders). Use the search bar to filter tracks.
-2.  **Commands:** A list of automation commands (see "Automation Commands" below).
+### Library Panel
+
+Right side panel:
+
+• Files — categorized audio files
+• Commands — automation commands
+
+Real-time search available.
+
+---
 
 ### Playlist Control
-*   **Add:** Drag and drop tracks from the **Library** panel OR directly from your computer's file manager (Finder/Explorer) into the central playlist area.
-    *   *Note:* Tracks dropped from Finder will appear gray (uncategorized). To use color coding and rotation features properly, it is recommended to add your folders to **Settings -> Categories** and use the Library.
-*   **Sort:** Drag items within the list to reorder them.
-*   **Remove:** Click the `✖` button on a track card.
-*   **Clear:** The **Clear Playlist** button in the menu removes all tracks from the queue.
 
-### Timers & Indicators
-*   **Queue Duration:** When the player is stopped (preparation mode), the *total duration of the queue* is displayed under the control buttons. It updates instantly when changes are made. This timer is hidden during playback.
-*   **AirTime:** Each track card displays its calculated air time based on the current queue.
+• Drag tracks from Library or Finder
+• Reorder with drag & drop
+• Remove with ✖
+• Clear Playlist removes all items
 
-### Technical Requirements
-*   **Supported Formats:** MP3, WAV, FLAC, M4A.
-*   **Sample Rate:** **44.1 kHz** is highly recommended.
-    *   *Note:* If a track has a different sample rate (e.g., 48 kHz), a warning badge (⚠️) will appear next to it in the Library. It is advised to convert such files to 44.1 kHz to ensure stable streaming.
+Tracks added from Finder appear uncategorized unless matched by folder rules.
 
-> **Pro Tip:** Before adding tracks to your library, prepare them: **normalize loudness** (e.g., to -1 dB peak), check the sample rate, and **trim silence** at the start and end of the file for perfect transitions.
+---
+
+### Queue Timers & Indicators
+
+• Queue Duration — total remaining time when stopped
+• Air Time — calculated broadcast time per track
+
+---
+
+## 2.1 Track Markers (Audio Markup)
+
+Markers are edited per track and saved in the Library.
+
+---
+
+### Intro Marker
+
+Defines the end of the intro section.
+
+Used for:
+• Intro countdown display
+• Voice Track timing
+
+If present:
+• Intro countdown appears in player
+• Disappears automatically when intro ends
+
+---
+
+### Fade Out Marker
+
+Defines the exact transition point.
+
+• Next track starts precisely at this moment
+• Crossfade duration is ignored
+• No artificial fade-in
+
+Fade Out is the primary transition mechanism.
+
+---
+
+### Marker Logic
+
+• All markers are measured from real track start
+• Timers and progress bars follow marker logic
+• Voice Tracking respects marker-based timing
 
 ---
 
 ## 3. Automation Commands
 
-P-Layer supports special playlist items called **Commands**. They look like tracks with a monospace font and a special icon but have zero duration.
+Zero-duration playlist items:
 
-**Available Commands:**
-1.  **Start Stream:** Connects to the streaming server.
-2.  **Stop Stream:** Disconnects from the server.
+• Start Stream
+• Stop Stream
 
-**How to use:**
-1.  Switch to the **Commands** tab in the Library.
-2.  Drag a command into the playlist just like a normal track.
-3.  **Behavior:** When the playback queue reaches a command, the player executes the action (e.g., starts streaming) and **immediately** transitions to the next track.
+Behavior:
+• Executes instantly
+• Playback continues
 
-*Example:* Place `Start Stream` as the first item to start broadcasting automatically. Place `Stop Stream` at the end to finish the show.
-
-> **Note:** Commands are fully saved within `.m3u` playlist files. You can insert them into playlists scheduled for future dates/times (e.g., start the stream automatically at 08:00 AM tomorrow by placing a command at the top of `2025-11-25_08-00.m3u`).
+Commands are saved in .m3u playlists.
 
 ---
 
 ## 4. Scheduler
 
-The application features a built-in auto-scheduler that checks for playlists every 10 seconds.
+Checks scheduled playlists every 10 seconds.
 
-### Scheduling a Playlist
-1.  Build your playlist.
-2.  Click **Save playlist**.
-3.  The app suggests a filename in the format: `YYYY-MM-DD_HH-MM.m3u` (Year-Month-Day_Hour-Minute) matching the current time.
-4.  Edit the date and time in the filename to match when you want this playlist to air (e.g., `2025-11-24_14-00.m3u` for tomorrow at 2:00 PM).
-5.  Save the file.
+### Scheduling Format
 
-### Auto-Loading Logic
-*   When the system time matches the filename (down to the minute), P-Layer loads the playlist.
-*   **Seamless Transition:**
-    *   If music is playing: The current queue is replaced, and a smooth crossfade occurs from the *currently playing track* to the *first track of the new playlist*. No silence.
-    *   If stopped: The playlist loads and starts playing automatically.
+Save playlist as:
+
+YYYY-MM-DD_HH-MM.m3u
+
+When system time matches — playlist loads automatically.
+
+---
+
+### Auto-Loading Behavior
+
+• If playing → seamless transition
+• If stopped → playlist loads and starts automatically
 
 ---
 
 ## 5. On-Air Control
 
-*   **Player Controls:** Play, Pause, Next, Eject (Stop & Reset).
-*   **STREAM Button:** Located below the progress bar on the right.
-    *   Displays status: `STREAM OFF`, `CONNECTING...`, `STREAM ON`, `STREAM ERROR`.
-    *   Clicking it allows manual toggling of the stream (if not managed by commands).
+• Play / Pause / Next / Eject
+• STREAM button controls broadcast
+• No silence gaps (internal keep-alive)
 
 ---
 
 ### Technical Notes
-*   **Keep-Alive:** The audio engine generates a silent carrier signal to keep the connection alive even during silence (between a command and a track), preventing server disconnects.
-*   **Loudness:** The streaming output is automatically normalized (Master Gain -2.5dB) to ensure safe headroom and professional loudness levels.
 
-*   **Supported macOS Systems**
-P-Layer is currently in active alpha testing.
-The application runs on the following macOS systems:
+• Supported formats: MP3, WAV, FLAC, M4A
+• Recommended sample rate: 44.1 kHz
+• Incorrect sample rate shows warning ⚠️
 
-– Macs with Intel processors
-– Macs with Apple M1
-– Macs with Apple M2
-
-On devices with Apple M3 processors, the current alpha build may not launch due to new system-level security restrictions.
-Full M3 support will be added in future releases.
+Voice Tracking works entirely through playback counters and marker-based timing.
 
 ---
 
+# Руководство пользователя P-Layer (RU)
 
-📡 Follow P-Layer on X: [@p_layer_app](https://x.com/p_layer_app)
-
-
----
-
-# Руководство пользователя P-Layer (Russian)
-
-**P-Layer** — это профессиональное приложение для автоматизации эфирного вещания. Оно позволяет создавать плейлисты, планировать выход эфиров по времени и управлять потоковым вещанием (Icecast/Shoutcast).
+P-Layer — профессиональная система автоматизации эфирного вещания для радио и стриминга. Поддерживает плейлисты, маркеры, стриминг и Voice Tracking.
 
 ---
 
-## 1. Быстрый старт и Настройка
+## 1. Быстрый старт и настройки
 
-Перед началом работы необходимо настроить приложение. Нажмите кнопку **Settings** в левом меню.
-
-### Вкладка General (Общие)
-*   **Playlist Folder:** Нажмите "Select Playlist Folder", чтобы выбрать папку, где будут храниться ваши плейлисты. Это критически важно для работы **Планировщика**.
-*   **Crossfade duration:** Длительность плавного перехода между треками (в секундах).
-*   **Smart Crossfade (Интеллектуальный переход):**
-    *   *Silence Threshold:* Уровень громкости, который считается тишиной.
-    *   *Silence Window:* Сколько времени должна длиться тишина, чтобы сработал переход.
-    *   *Smart Crossfade only in last (sec):* Функция активна только в конце трека (защита от ложных срабатываний в паузах внутри песни).
-*   **Compressor mode:** Режим обработки звука (Soft, Punchy или Off). Рекомендуется "Punchy" для радио-звучания.
-
-### Вкладка Categories (Категории)
-Для работы **Библиотеки** необходимо создать хотя бы одну категорию.
-1.  Введите **Имя категории** (например, "Music", "Jingles").
-2.  Выберите **Цвет** из палитры.
-3.  Нажмите **Select Folder**, чтобы выбрать папку с аудиофайлами на вашем компьютере.
-4.  Нажмите кнопку **Галочка (✔)** для сохранения.
-*Файлы из этой папки появятся в панели "Library" во вкладке "Files".*
-
-> **Совет:** Рекомендуется создать одну общую папку для музыкальной базы (например, "P-Layer Music"). Внутри нее создайте отдельные подпапки для каждой категории (например, "Хиты", "Золотые", "Джинглы") и подключайте в настройках именно эти подпапки.
-
-### Вкладка Streaming (Вещание)
-Здесь вводятся данные вашего Icecast или Shoutcast сервера:
-*   **Enable streaming:** Разрешить вещание (глобальный переключатель).
-*   **Server Settings:** Host, Port, Mountpoint, Password и др.
-*   После ввода данных приложение готово к эфиру.
+Откройте Settings в левом меню.
 
 ---
 
-## 2. Работа с Библиотекой и Плейлистом
+### General (Общие)
 
-### Библиотека (Library)
-Справа находится панель библиотеки. В ней есть две вкладки (переключаются сверху):
-1.  **Files:** Отображает ваши аудиофайлы, отсортированные по категориям (папкам). Используйте строку поиска для фильтрации.
-2.  **Commands:** Список команд автоматизации (см. раздел "Команды").
+• Playlist Folder — папка с расписанием
+• Crossfade Duration — используется при отсутствии Fade Out
+• Smart Crossfade — переход по тишине
+• Compressor Mode — Off / Soft / Punchy
+
+---
+
+### Categories (Обязательно)
+
+Создайте хотя бы одну категорию:
+
+1. Имя
+2. Цвет
+3. Папка
+4. Подтвердить ✔
+
+---
+
+### Voice Tracking (Новая функция)
+
+Voice Tracking позволяет автоматически воспроизводить голосовые вставки (Voice Track) в интро или на стыке треков.
+
+Настройка:
+
+В категории включите чекбокс:
+«Use for Voice Tracking»
+
+Все треки этой категории будут считаться Voice Track.
+
+Логика воспроизведения:
+
+Если Voice Track стоит между двумя музыкальными треками:
+
+1. Если интро следующего трека длиннее или равно Voice Track →Voice Track полностью проигрывается внутри интро следующего трека.
+2. Если интро следующего трека короче Voice Track →Voice Track запускается на хвосте предыдущего трека и заканчивается в точке окончания интро следующего трека.
+3. Если у следующего трека нет интро →
+   Voice Track проигрывается на хвосте предыдущего трека и заканчивается в нуле следующего трека.
+
+Все расчёты выполняются строго по счётчикам elapsed / remaining.
+
+Дакинг:
+
+• Музыка автоматически приглушается во время Voice Track
+• После окончания голосовой вставки громкость восстанавливается
+
+---
+
+### Streaming
+
+Настройка Icecast / Shoutcast.
+
+---
+
+### Обработка звука и дакинг
+
+• Нормализация
+• Дакинг под голос
+• Настройки глубины и восстановления
+
+---
+
+## 2. Библиотека и плейлист
+
+### Library
+
+Правая панель:
+
+• Files
+• Commands
+
+---
 
 ### Управление плейлистом
-*   **Добавление:** Перетащите треки из панели **Library** ИЛИ прямо из папки на вашем компьютере (Finder/Проводник) в центральную область плейлиста.
-    *   *Важно:* Треки, добавленные из Finder, будут отображаться серым цветом (без категории). Чтобы использовать цветовую маркировку и функции ротации, рекомендуется добавить папки через **Settings -> Categories** и использовать Библиотеку.
-*   **Сортировка:** Вы можете менять порядок треков перетаскиванием внутри списка.
-*   **Удаление:** Нажмите крестик `✖` на карточке трека.
-*   **Очистка:** Кнопка **Clear Playlist** в меню удаляет все треки из очереди.
 
-### Таймеры и Индикация
-*   **Queue Duration:** Когда плеер остановлен (режим подготовки), под кнопками управления отображается *общая длительность очереди*. Она пересчитывается мгновенно при любых изменениях. При запуске эфира этот таймер скрывается.
-*   **AirTime:** В каждой карточке трека отображается расчетное время выхода в эфир.
-
-### Технические требования
-*   **Поддерживаемые форматы:** MP3, WAV, FLAC, M4A.
-*   **Частота дискретизации:** Рекомендуется **44.1 kHz**.
-    *   *Важно:* Если частота трека отличается от 44.1 kHz (например, 48 kHz), в Библиотеке рядом с ним появится значок предупреждения (⚠️). Рекомендуется перекодировать такие файлы в 44.1 kHz для стабильного вещания.
-
-> **Совет профессионала:** Перед добавлением музыки в базу подготовьте файлы: **нормализуйте громкость** (например, до -1 dB), проверьте частоту и **обрежьте тишину** в начале и конце трека. Это обеспечит идеальные переходы в эфире.
+• Drag & drop
+• Сортировка
+• Удаление
+• Очистка
 
 ---
 
-## 3. Команды Автоматизации (Commands)
+### Таймеры
 
-P-Layer поддерживает специальные элементы плейлиста — **Команды**. Они выглядят как треки с моноширинным шрифтом и иконкой, но имеют нулевую длительность.
-
-**Доступные команды:**
-1.  **Start Stream:** Подключается к серверу вещания.
-2.  **Stop Stream:** Разрывает соединение с сервером.
-
-**Как использовать:**
-1.  Перейдите во вкладку **Commands** в библиотеке.
-2.  Перетащите команду в плейлист так же, как обычный трек.
-3.  **Логика работы:** Когда очередь воспроизведения доходит до команды, плеер выполняет действие (например, включает стрим) и **мгновенно** переходит к следующему треку.
-
-*Пример:* Поставьте команду `Start Stream` первым элементам плейлиста, чтобы эфир начался автоматически с первым треком. Поставьте `Stop Stream` в конце, чтобы завершить вещание.
-
-> **Важно:** Команды сохраняются внутри файлов плейлистов (`.m3u`). Вы можете использовать их при планировании эфиров на будущее (например, чтобы стрим сам включился завтра в 08:00, добавьте команду в начало плейлиста `2025-11-25_08-00.m3u`).
+• Queue Duration
+• Air Time
 
 ---
 
-## 4. Планировщик (Scheduler)
+## 2.1 Маркеры
 
-Приложение имеет встроенный автоматический планировщик, который проверяет расписание каждые 10 секунд.
+### Маркер Intro
 
-### Создание расписания
-1.  Соберите плейлист.
-2.  Нажмите кнопку **Save playlist**.
-3.  Приложение автоматически предложит имя файла в формате: `YYYY-MM-DD_HH-MM.m3u` (Год-Месяц-День_Час-Минута), соответствующее текущему времени.
-4.  Измените дату и время в имени файла на то, когда этот плейлист должен выйти в эфир (например, `2025-11-24_14-00.m3u` для эфира завтра в 14:00).
-5.  Сохраните файл.
-
-### Как работает авто-загрузка
-*   Когда наступает указанное время (с точностью до минуты), P-Layer находит файл.
-*   **Бесшовный переход:**
-    *   Если музыка играет: текущий плейлист заменяется новым, и происходит плавный кроссфейд с *текущего играющего трека* на *первый трек нового плейлиста*. Эфир не прерывается.
-    *   Если плеер стоял: новый плейлист загружается и запускается автоматически.
+Определяет конец вступления.
+Используется для тайминга Voice Track.
 
 ---
 
-## 5. Управление Эфиром
+### Маркер Fade Out
 
-*   **Кнопки плеера:** Play, Pause, Next (следующий трек), Eject (полная остановка и сброс).
-*   **STREAM кнопка:** Находится справа под прогресс-баром.
-    *   Показывает статус: `STREAM OFF`, `CONNECTING...`, `STREAM ON`, `STREAM ERROR`.
-    *   Нажатие на кнопку позволяет включить/выключить вещание вручную (если оно не управляется командами).
+Определяет точку перехода.
+Следующий трек стартует строго в этой точке.
 
 ---
 
-### Примечания
-*   Для стабильного вещания даже в моменты тишины (между командой и треком) движок поддерживает "несущий сигнал" (Keep-Alive), предотвращая обрывы связи с сервером.
-*   Уровень громкости вещания автоматически нормализуется (Master Gain -2.5dB), чтобы избежать перегрузки сигнала на стороне сервера.
+### Логика
+
+• Отсчёт от реального старта
+• Таймеры следуют маркерам
+• Voice Tracking учитывает интро и fade_out
+
+---
+
+## 3. Команды
+
+• Start Stream
+• Stop Stream
+
+---
+
+## 4. Планировщик
+
+Проверка каждые 10 секунд.
+Формат имени: YYYY-MM-DD_HH-MM.m3u
+
+---
+
+## 5. Управление эфиром
+
+• Кнопки плеера
+• STREAM
+• Без пауз между элементами
+
+---
+
+Поддерживаемые форматы: MP3, WAV, FLAC, M4A
+Рекомендуемая частота: 44.1 kHz

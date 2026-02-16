@@ -2,6 +2,9 @@
 
 P-Layer is a professional broadcast automation application designed for radio stations, community radio, and streamers. It provides precise playlist control, audio processing, scheduling, streaming (Icecast/Shoutcast), and integrated Voice Tracking.
 
+![P-Layer Screenshot](screen1.png)
+
+![P-Layer Screenshot](screen2.png)
 ---
 
 ## 1. Quick Start & Settings

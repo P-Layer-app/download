@@ -1,4 +1,4 @@
-# P-Layer User Manual
+# P-Layer
 
 P-Layer is a professional broadcast automation application designed for radio stations, community radio, and streamers. It provides precise playlist control, audio processing, scheduling, streaming (Icecast/Shoutcast), and integrated Voice Tracking.
 
@@ -9,28 +9,57 @@ P-Layer is a professional broadcast automation application designed for radio st
 ![P-Layer Screenshot](screen3.png)
 ---
 
-## 1. Quick Start & Settings
+## Key Features
 
-Open Settings from the left sidebar before first use.
+- Broadcast automation and playlist control
+- **Rotator** music scheduling system
+- Automatic daily playlist generation (.m3u) from hourly clocks
+- Visual hour editor (**Clock Wheel**)
+- Artist / Track separation rules for music rotation
+- Integrated **Voice Tracking**
+- Audio processing and compression
+- Icecast and Shoutcast streaming support
+- Library synchronization with disk
 
 ---
 
-### General Tab
+![P-Layer Screenshot](screen1.png)
 
-• Playlist Folder
-Select the folder where scheduled playlists (.m3u) are stored.
-Required for Scheduler.
+![P-Layer Screenshot](screen2.png)
 
-• Crossfade Duration
-Used only if a track has no Fade Out marker.
+![P-Layer Screenshot](screen3.png)
 
-• Smart Crossfade
+---
+
+# 1. Quick Start
+
+Before using the application, open **Settings** from the left sidebar.
+
+---
+
+# 2. Settings
+
+## General
+
+### Playlist Folder
+
+Folder where scheduled playlists (.m3u) are stored.
+
+Used by the **Scheduler** module.
+
+### Crossfade Duration
+
+Used only if a track does not contain a **Fade Out marker**.
+
+### Smart Crossfade
+
+Automatic silence detection settings:
 
 - Silence Threshold
 - Silence Window
 - Only in last (sec)
 
-• Compressor Mode
+### Compressor Mode
 
 - Off
 - Soft
@@ -38,352 +67,283 @@ Used only if a track has no Fade Out marker.
 
 ---
 
-### Categories Tab (Required)
+## Categories (Required)
 
-At least one category must be created for Library to function.
+At least one category must be created for the Library to function.
+
+To create a category:
 
 1. Enter Category Name
 2. Choose Color
 3. Select Folder with audio files
 4. Confirm ✔
 
-Files from that folder will appear in the Library.
+All files from the selected folder will appear in the **Library**.
 
 Recommended structure:
-One main music folder → subfolders per category.
+
+```
+Music/
+  Rock/
+  Pop/
+  Dance/
+  VoiceTracks/
+```
 
 ---
 
-### Voice Tracking (New)
+# 3. Rotator (Music Rotation)
 
-Voice Tracking allows automatic voice-over playback inside track intros or transitions.
+The **Rotator** module generates broadcast playlists based on hourly clock templates.
 
-Configuration:
+It consists of several components.
 
-• In Categories settings, enable the checkbox:
-  "Use for Voice Tracking"
+### Clock Editor
 
-Any track in a category marked as Voice Tracking is treated as a Voice Track (VT).
+Editor for hour templates.
 
-Voice Track Playback Logic:
+Each hour contains category positions, for example:
+
+```
+MUSIC A
+MUSIC B
+MUSIC C
+JINGLE
+MUSIC A
+```
+
+### Clock Wheel
+
+Visual representation of the hour template.
+
+Allows quick understanding of the hour structure.
+
+### Categories
+
+Categories serve as music sources for the rotator.
+
+### Schedule
+
+Assigns clock templates to specific hours of the day.
+
+---
+
+## Playlist Generation
+
+Rotator can automatically generate **daily playlists (.m3u)**.
+
+Process:
+
+1. A schedule of clocks is created
+2. Rotator selects tracks from categories
+3. Separation rules are applied
+4. A playlist is generated
+
+---
+
+## Rotation Rules
+
+Supported rules:
+
+### Artist Separation
+
+Limits how frequently the same artist can appear within a rotation.
+
+### Track Separation
+
+Prevents the same track from repeating too often.
+
+These rules ensure professional radio-style music rotation.
+
+---
+
+# 4. Voice Tracking
+
+**Voice Tracking allows voice segments to be played over music tracks, using the intro or transition between songs.**
+
+To use Voice Tracking:
+
+Enable the option in the category settings:
+
+```
+Use for Voice Tracking
+```
+
+Any track placed in such a category will be treated as a **Voice Track (VT)**.
+
+---
+
+## Playback Logic
 
 When a Voice Track is placed between two music tracks:
 
-1. If the next track has an Intro marker and its intro duration is greater than or equal to the Voice Track length →Voice Track plays entirely inside the next track's intro.
-2. If the next track has an Intro marker but its intro is shorter than the Voice Track →Voice Track starts on the previous track’s tail so that it ends exactly at the end of the next track’s intro.
-3. If the next track has no Intro marker (intro = 0) →
-   Voice Track starts on the previous track’s tail and ends exactly at the beginning (0 point) of the next track.
+### Case 1
 
-All timing is calculated strictly by playback counters (elapsed / remaining).
+If the next track has an **Intro marker** and the intro duration is greater than or equal to the Voice Track length:
+
+The Voice Track plays entirely inside the next track's intro.
+
+### Case 2
+
+If the intro is shorter than the Voice Track:
+
+The Voice Track starts on the tail of the previous track  
+and ends exactly at the end of the next track's intro.
+
+### Case 3
+
+If the next track has no intro marker:
+
+The Voice Track starts on the tail of the previous track  
+and ends exactly at the beginning (0 point) of the next track.
+
+All timing is calculated using **playback counters**.
+
 No artificial delays are used.
 
-Ducking:
+---
 
-• Music volume is automatically reduced during Voice Track playback.
-• Music restores after Voice Track ends.
-• Ducking depth and release time are configurable in Audio Processing settings.
+## Ducking
+
+During Voice Track playback, music volume is automatically reduced.
+
+After the voice segment ends, the volume returns to normal.
+
+Configurable parameters:
+
+- Ducking Amount
+- Release Time
 
 ---
 
-### Streaming Tab
+# 5. Library & Playlist
 
-Configure Icecast or Shoutcast:
+## Library
 
-• Enable Streaming
-• Host
-• Port
-• Mountpoint
-• Password
+The right panel contains:
 
-STREAM button states:
-• OFF
-• CONNECTING
-• ON
-• ERROR
+- **Files** — categorized audio files
+- **Commands** — automation commands
+
+Real-time search is available.
 
 ---
 
-### Audio Processing & Ducking
+## Playlist Management
 
-• Master output normalization
-• Automatic ducking during Voice Tracks
-• Adjustable Ducking Amount
-• Adjustable Release Time
+- Drag tracks from the Library or Finder
+- Reorder using drag & drop
+- Remove tracks using ✖
+- **Clear Playlist** removes all items
 
----
-
-## 2. Library & Playlist Management
-
-### Library Panel
-
-Right side panel:
-
-• Files — categorized audio files
-• Commands — automation commands
-
-Real-time search available.
+Tracks added directly from Finder appear uncategorized unless matched by folder rules.
 
 ---
 
-### Playlist Control
+# 6. Track Markers
 
-• Drag tracks from Library or Finder
-• Reorder with drag & drop
-• Remove with ✖
-• Clear Playlist removes all items
-
-Tracks added from Finder appear uncategorized unless matched by folder rules.
+Markers are edited in the **Track Editor**.
 
 ---
 
-### Queue Timers & Indicators
-
-• Queue Duration — total remaining time when stopped
-• Air Time — calculated broadcast time per track
-
----
-
-## 2.1 Track Markers (Audio Markup)
-
-Markers are edited per track and saved in the Library.
-
----
-
-### Intro Marker
+## Intro Marker
 
 Defines the end of the intro section.
 
 Used for:
-• Intro countdown display
-• Voice Track timing
 
-If present:
-• Intro countdown appears in player
-• Disappears automatically when intro ends
+- intro countdown display
+- Voice Tracking timing
 
 ---
 
-### Fade Out Marker
+## Fade Out Marker
 
-Defines the exact transition point.
+Defines the transition point.
 
-• Next track starts precisely at this moment
-• Crossfade duration is ignored
-• No artificial fade-in
+The next track starts exactly at this moment.
 
-Fade Out is the primary transition mechanism.
+If Fade Out is set:
 
----
-
-### Marker Logic
-
-• All markers are measured from real track start
-• Timers and progress bars follow marker logic
-• Voice Tracking respects marker-based timing
+- global Crossfade is ignored
+- transition occurs strictly at the marker
 
 ---
 
-## 3. Automation Commands
+# 7. Automation Commands
 
-Zero-duration playlist items:
+Playlists can contain zero-duration commands:
 
-• Start Stream
-• Stop Stream
+- Start Stream
+- Stop Stream
 
-Behavior:
-• Executes instantly
-• Playback continues
+Commands execute instantly while playback continues.
 
-Commands are saved in .m3u playlists.
+Commands are stored directly inside **.m3u** playlists.
 
 ---
 
-## 4. Scheduler
+# 8. Scheduler
 
-Checks scheduled playlists every 10 seconds.
+The Scheduler checks for scheduled playlists every **10 seconds**.
 
-### Scheduling Format
+---
 
-Save playlist as:
+## Playlist Format
 
+```
 YYYY-MM-DD_HH-MM.m3u
+```
 
-When system time matches — playlist loads automatically.
-
----
-
-### Auto-Loading Behavior
-
-• If playing → seamless transition
-• If stopped → playlist loads and starts automatically
+When system time matches the file name, the playlist loads automatically.
 
 ---
 
-## 5. On-Air Control
+## Behavior
 
-• Play / Pause / Next / Eject
-• STREAM button controls broadcast
-• No silence gaps (internal keep-alive)
+If playback is already running:
 
----
+the playlist switches seamlessly.
 
-### Technical Notes
+If playback is stopped:
 
-• Supported formats: MP3, WAV, FLAC, M4A
-• Recommended sample rate: 44.1 kHz
-• Incorrect sample rate shows warning ⚠️
-
-Voice Tracking works entirely through playback counters and marker-based timing.
+the playlist loads and starts automatically.
 
 ---
 
-# Руководство пользователя P-Layer (RU)
+# 9. On-Air Control
 
-P-Layer — профессиональная система автоматизации эфирного вещания для радио и стриминга. Поддерживает плейлисты, маркеры, стриминг и Voice Tracking.
+Main controls:
 
----
+- Play
+- Pause
+- Next
+- Eject
 
-## 1. Быстрый старт и настройки
+The **STREAM** button controls broadcasting.
 
-Откройте Settings в левом меню.
+States:
 
----
-
-### General (Общие)
-
-• Playlist Folder — папка с расписанием
-• Crossfade Duration — используется при отсутствии Fade Out
-• Smart Crossfade — переход по тишине
-• Compressor Mode — Off / Soft / Punchy
-
----
-
-### Categories (Обязательно)
-
-Создайте хотя бы одну категорию:
-
-1. Имя
-2. Цвет
-3. Папка
-4. Подтвердить ✔
+- OFF
+- CONNECTING
+- ON
+- ERROR
 
 ---
 
-### Voice Tracking (Новая функция)
+# 10. Technical Specifications
 
-Voice Tracking позволяет автоматически воспроизводить голосовые вставки (Voice Track) в интро или на стыке треков.
+Supported formats:
 
-Настройка:
+- MP3
+- WAV
+- FLAC
+- M4A
 
-В категории включите чекбокс:
-«Use for Voice Tracking»
+Recommended sample rate:
 
-Все треки этой категории будут считаться Voice Track.
+```
+44.1 kHz
+```
 
-Логика воспроизведения:
-
-Если Voice Track стоит между двумя музыкальными треками:
-
-1. Если интро следующего трека длиннее или равно Voice Track →Voice Track полностью проигрывается внутри интро следующего трека.
-2. Если интро следующего трека короче Voice Track →Voice Track запускается на хвосте предыдущего трека и заканчивается в точке окончания интро следующего трека.
-3. Если у следующего трека нет интро →
-   Voice Track проигрывается на хвосте предыдущего трека и заканчивается в нуле следующего трека.
-
-Все расчёты выполняются строго по счётчикам elapsed / remaining.
-
-Дакинг:
-
-• Музыка автоматически приглушается во время Voice Track
-• После окончания голосовой вставки громкость восстанавливается
-
----
-
-### Streaming
-
-Настройка Icecast / Shoutcast.
-
----
-
-### Обработка звука и дакинг
-
-• Нормализация
-• Дакинг под голос
-• Настройки глубины и восстановления
-
----
-
-## 2. Библиотека и плейлист
-
-### Library
-
-Правая панель:
-
-• Files
-• Commands
-
----
-
-### Управление плейлистом
-
-• Drag & drop
-• Сортировка
-• Удаление
-• Очистка
-
----
-
-### Таймеры
-
-• Queue Duration
-• Air Time
-
----
-
-## 2.1 Маркеры
-
-### Маркер Intro
-
-Определяет конец вступления.
-Используется для тайминга Voice Track.
-
----
-
-### Маркер Fade Out
-
-Определяет точку перехода.
-Следующий трек стартует строго в этой точке.
-
----
-
-### Логика
-
-• Отсчёт от реального старта
-• Таймеры следуют маркерам
-• Voice Tracking учитывает интро и fade_out
-
----
-
-## 3. Команды
-
-• Start Stream
-• Stop Stream
-
----
-
-## 4. Планировщик
-
-Проверка каждые 10 секунд.
-Формат имени: YYYY-MM-DD_HH-MM.m3u
-
----
-
-## 5. Управление эфиром
-
-• Кнопки плеера
-• STREAM
-• Без пауз между элементами
-
----
-
-Поддерживаемые форматы: MP3, WAV, FLAC, M4A
-Рекомендуемая частота: 44.1 kHz
+If a file has an incorrect sample rate, a warning ⚠️ is displayed.

@@ -23,14 +23,6 @@ P-Layer is a professional broadcast automation application designed for radio st
 
 ---
 
-![P-Layer Screenshot](screen1.png)
-
-![P-Layer Screenshot](screen2.png)
-
-![P-Layer Screenshot](screen3.png)
-
----
-
 ## 1. What This App Does
 
 P-Layer allows you to:

@@ -9,20 +9,6 @@ P-Layer is a professional broadcast automation application designed for radio st
 ![P-Layer Screenshot](screen3.png)
 ---
 
-## Key Features
-
-- Broadcast automation and playlist control
-- **Rotator** music scheduling system
-- Automatic daily playlist generation (.m3u) from hourly clocks
-- Visual hour editor (**Clock Wheel**)
-- Artist / Track separation rules for music rotation
-- Integrated **Voice Tracking**
-- Audio processing and compression
-- Icecast and Shoutcast streaming support
-- Library synchronization with disk
-
----
-
 ## 1. What This App Does
 
 P-Layer allows you to:
@@ -32,8 +18,11 @@ P-Layer allows you to:
 3. Mark up tracks in Audio Editor (Start / Intro / Fade Out).
 4. Auto-load playlists by time.
 5. Generate playlists in Rotator (PRO).
-6. Plan break content in Planner.
-7. Start/stop stream output (Icecast/Shoutcast) manually or by playlist commands.
+6. Edit existing playlists or create playlists manually, including adding/removing items.
+7. Plan ad/service break filling in Planner (PRO).
+8. Start/stop stream output (Icecast/Shoutcast) manually or by playlist commands.
+9. Record voice tracks and save them to library or directly into playlist (PRO).
+10. Play voice tracks over music tracks with automatic positioning on intro or at track end.
 
 ---
 
@@ -48,6 +37,7 @@ Left sidebar:
 3. `Planner`
 4. `Playlist`
 5. `Settings`
+6. `VT Recorder`
 
 Top center:
 
@@ -238,6 +228,7 @@ Result:
 3. `Show Full`
 4. `Zoom -> End`
 5. `Zoom` slider
+6. Spacebar starts playback.
 
 ---
 
@@ -322,6 +313,7 @@ Result:
 4. See total time and cumulative card timing.
 5. Use `Load playlist`, `Save playlist`, `Clear playlist`.
 6. Use `Compact view`.
+7. Record voice tracks into playlist. Select a track and click `VT Recorder`.
 
 ## Break Marker Behavior
 
@@ -346,6 +338,7 @@ Rotator has 3 tabs:
 Goal:
 
 1. Build hour template (clock) from categories and break markers.
+2. Add repeating elements such as jingles.
 
 How to create a clock:
 
@@ -406,11 +399,11 @@ Rotator generation requires PRO.
 
 Activation:
 
-1. Click `PRO` badge (top-right in Rotator).
-2. Copy `LICENSE REQUEST CODE` via `Copy`.
-3. Obtain your license key.
-4. Paste into `LICENSE KEY`.
-5. Click `Activate`.
+1. Open `Help -> Copy License Request Code`.
+2. Send the code to support and receive a `LICENSE KEY`.
+3. Open `Help -> Activate License…`.
+4. Paste your key into `LICENSE KEY` and click `Activate`.
+5. Verify status via `Help -> License Status…`.
 
 ---
 
@@ -466,10 +459,10 @@ Result:
 
 Activation flow is the same as Rotator:
 
-1. Click `PRO`.
-2. `LICENSE REQUEST CODE` -> `Copy`.
-3. Paste `LICENSE KEY`.
-4. Click `Activate`.
+1. Open `Help -> Copy License Request Code`.
+2. Send the code to support and receive a `LICENSE KEY`.
+3. Open `Help -> Activate License…`.
+4. Paste the key and click `Activate`.
 
 After activation, break cards in Studio refresh without app restart.
 
@@ -534,6 +527,80 @@ How to detach:
 
 1. Click `✖` in voice badge on card.
 
+## 13.1 VT Recorder (VoiceTrack Studio): Record Your Own Voice Track
+
+## How to Open
+
+1. In main Studio window: `Tools -> VT Recorder` (left sidebar).
+2. In Playlist Editor: `Tools -> VT Recorder`.
+
+Result:
+
+1. `VoiceTrack Recorder` window opens.
+2. If a music track was selected before opening, the top `Attach To` block shows:
+   - full track title (`Artist - Title`);
+   - `Intro` value (if set).
+
+## Prepare Before Recording
+
+1. In `Name`, enter voice track name (or leave empty).
+2. In `Input`, select microphone.
+3. Watch vertical `Input Level` meter on the right:
+   - it works before recording starts;
+   - `CLIP` means overload.
+
+## Record
+
+1. Click `RECORD` (or press `R`).
+2. Speak into microphone while monitoring `Input Level`.
+3. Click `STOP` (or press `R` again).
+
+Result:
+
+1. Recording is prepared automatically before save (start/end trim, level normalization, peak limiting).
+
+## Preview and Delete
+
+1. `PLAY` — preview recorded result.
+2. `DELETE` — remove current recording and start again.
+
+Important:
+
+1. Preview output uses `Preview Output Device` from `Settings -> General`.
+2. If preview device is unavailable, playback falls back to `Program Output Device`.
+
+## Save (SAVE)
+
+1. Click `SAVE` — no system save dialog is shown.
+2. File is saved automatically into category folder marked as `Play Over` (Voice Over).
+3. File name is taken from `Name`:
+   - if empty: `VT_1.wav`, then `VT_2.wav`, `VT_3.wav`, etc.;
+   - if provided: `name.wav`, then `name_2.wav`, `name_3.wav`, etc.
+4. Saved file format: `PCM WAV`, `44.1 kHz`, `16-bit`, `mono`.
+
+## Attach to Selected Track
+
+1. If VT Recorder was opened with a selected music track (from Studio or Playlist Editor), after `SAVE` the voice track:
+   - is saved into Voice Over folder;
+   - is automatically attached to that selected track (same behavior as drag&drop).
+2. If no track was selected (or track was removed), only file save is performed.
+
+## License (PRO)
+
+1. Without PRO you can:
+   - open VT Recorder;
+   - record;
+   - preview;
+   - delete recording.
+2. `SAVE` is PRO-only.
+3. Without PRO, `SAVE` shows informational modal:
+   - `Saving Voice Tracks is available in the PRO version.`
+4. License activation:
+   - `Help -> Copy License Request Code`;
+   - send the code to support and receive a key;
+   - `Help -> Activate License…` -> paste key -> `Activate`;
+   - check status: `Help -> License Status…`.
+
 ---
 
 ## 14. Practical Scenario: Prepare a Broadcast Day
@@ -543,8 +610,9 @@ How to detach:
 3. In `Rotator -> Categories`, set separation rules.
 4. In `Rotator -> Schedule`, generate playlists for target date.
 5. In `Planner`, fill required break slots for that date.
-6. In Studio, load specific file manually (`Load playlist`) if needed, or rely on scheduled auto-load.
-7. Before going live, switch `STREAM` on.
+6. In VT Recorder, record voice tracks and add them to playlist.
+7. In Studio, load specific file manually (`Load playlist`) if needed, or rely on scheduled auto-load.
+8. Before going live, switch `STREAM` on.
 
 ---
 
@@ -576,7 +644,8 @@ Reason:
 
 Fix:
 
-1. Activate PRO via `PRO` in Planner or Rotator.
+1. Activate PRO via `Help -> Activate License…`.
+2. If you do not have a key yet: use `Help -> Copy License Request Code`, send it to support, and receive a key.
 
 ## Rotator Generation Fails
 
@@ -610,7 +679,3 @@ Fix:
 5. In Studio, correct queue/playlist is loaded.
 6. `Play` starts successfully.
 7. `STREAM` status is `ON`.
-
----
-
-If you want, next step can be a one-page “Quick Start for Operators” version of this manual.

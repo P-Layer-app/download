@@ -230,6 +230,34 @@ Result:
 5. `Zoom` slider
 6. Spacebar starts playback.
 
+## Crossfade and Intelligent Crossfade (Settings -> General)
+
+`Crossfade (sec)`:
+
+1. This is the overlap duration between two tracks.
+2. In P-Layer, the next track does not fade in; it starts instantly at full level at transition time.
+3. When the second track starts, the first track begins fading out.
+4. `Crossfade` defines how long this tail fade-out lasts.
+
+In other words:
+
+1. The second track starts instantly.
+2. The first track fades out.
+3. Fade-out duration equals `Crossfade`.
+
+`Intelligent Crossfade` is used when a track has no `Fade Out` marker.
+
+Parameters:
+
+1. `Silence threshold (0.00–0.20)` — signal level threshold; anything below it is treated as silence.
+2. `Silence window (ms)` — minimum silence duration to be considered valid (very short dips are ignored).
+3. `Smart crossfade only in last (sec)` — limits analysis to the last N seconds, so quiet mid-song parts do not trigger early transitions.
+
+Logic:
+
+1. If suitable silence is found, the next track starts at that point.
+2. If no silence is found, the system falls back to regular `Crossfade (sec)`.
+
 ---
 
 ## 7. On-Air Playback and Streaming
@@ -262,6 +290,37 @@ Result:
 
 1. During playback, command executes automatically.
 
+## System Now Playing (macOS)
+
+1. During playback, P-Layer publishes current track metadata to macOS system media:
+   - `title`
+   - `artist`
+   - `album` (if present)
+   - duration and current position
+2. This is needed for integration with macOS-aware apps (for example Audio Hijack), so they can detect the current track and progress automatically.
+3. On full playback stop (`Eject`/stop), system now-playing state is cleared.
+
+## External Now Playing Metadata Files
+
+1. On confirmed start of a music track, P-Layer updates:
+   - `~/Music/P-Layer/nowplaying.json`
+   - `~/Music/P-Layer/CurrentPlaying.txt`
+2. This is needed for external integrations that read metadata from files: OBS overlays, broadcast automation, and custom scripts.
+3. While break-session items are playing, these files are not overwritten; the last music track remains.
+4. Formats:
+   - `nowplaying.json`
+     ```json
+     {
+       "artist": "...",
+       "title": "...",
+       "started_at": "ISO timestamp"
+     }
+     ```
+   - `CurrentPlaying.txt`
+     ```text
+     Artist - Title
+     ```
+
 ---
 
 ## 8. Save/Load Playlists and Time-Based Auto-Load
@@ -287,6 +346,8 @@ How it works:
 
 1. App checks every 10 seconds for a file matching current minute.
 2. Filename format must be exact: `YYYY-MM-DD_HH-MM.m3u`.
+3. If you do not want auto-load, do not use this date/time mask in the filename.
+4. You can name playlist files any other way (`.m3u` not matching this mask), and they will not auto-start.
 
 Example:
 
@@ -514,18 +575,35 @@ What this gives:
 1. Tracks in this category become voice tracks.
 2. You can attach them to music cards.
 
-How to attach:
+How the system knows a track has an intro:
 
-1. Drag voice track onto a music track card in queue.
+1. Intro must be marked in advance in `Audio Editor`.
+2. Put `Intro` marker at the point where instrumental intro ends and vocals begin.
+3. If `Intro` is not marked, the track is treated as having no intro.
+
+How to attach voice track manually:
+
+1. Take voice track from `Library`.
+2. Drag it onto a music track card and release.
+3. This works both in Studio queue and in `Playlist Editor`.
 
 Result:
 
 1. Card shows `🎤` badge.
-2. Voice track plays in intro or in-out depending on markers.
+2. Voice track plays over the intro.
+3. Voice track ends exactly at the point where vocals begin (`Intro` marker).
 
 How to detach:
 
 1. Click `✖` in voice badge on card.
+
+Automatic voice track rotation:
+
+1. Create a separate folder on disk for voice tracks.
+2. Put prepared voice tracks into that folder.
+3. Connect this folder in `Settings -> Categories` as `Category Path` for your voice category.
+4. Enable `Play Over` for that category.
+5. Tracks from this category can then be used for regular voice break rotation during the hour.
 
 ## 13.1 VT Recorder (VoiceTrack Studio): Record Your Own Voice Track
 
@@ -625,6 +703,10 @@ Check:
 1. `Settings -> General` has correct `Playlist Folder`.
 2. Filename is exact `YYYY-MM-DD_HH-MM.m3u`.
 3. System time is correct.
+
+Important:
+
+1. Files not matching `YYYY-MM-DD_HH-MM.m3u` are never auto-loaded and can only be started manually via `Load playlist`.
 
 ## Planner Right Panel Has No Tracks
 

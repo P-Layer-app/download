@@ -96,6 +96,15 @@ Result:
 1. Category appears in categories list.
 2. Tracks from that folder appear in Library.
 
+Important (required):
+
+1. Categories in P-Layer are rotation categories, not generic system folders and not archive buckets.
+2. Define your category structure and rotation logic before initial setup.
+3. Do not use a category as a "catch-all" storage for mixed tracks.
+4. Do not fill one `Category Path` with nested subfolders that have different rotation purposes.
+5. Keep only curated tracks in each category folder that are intended for rotation.
+6. After you start daily use, avoid changing `Category Path`; creating a new category and reconfiguring rotation is safer.
+
 ## Step 3. Configure Audio Outputs
 
 1. In `Settings -> General`, find `Audio Output Routing`.
@@ -128,7 +137,7 @@ Result:
 
 ## Step 5. Exit Settings
 
-1. Click `Back` at the bottom of the settings view (above Support block).
+1. Click `Done` in the settings header.
 
 Result:
 
@@ -321,6 +330,42 @@ Result:
      Artist - Title
      ```
 
+## Studio Clock in Browser (LAN)
+
+What it is:
+
+1. Built-in web clock page that can be opened on any device in your local network.
+2. No separate clock app installation is required.
+
+How to open:
+
+1. Launch P-Layer.
+2. Open `Settings -> General`.
+3. Find `Studio Clock` block at the bottom.
+4. Use `Copy` on the needed address:
+   - `This computer` -> local address for the same machine.
+   - `Local network` -> address for another device in the same LAN.
+5. Open copied URL in any browser.
+
+What clock page shows:
+
+1. Circular studio clock UI.
+2. Current time, weekday, and date.
+3. `On Air` current track, `Next` track, and active playlist.
+
+Important:
+
+1. Clock time is taken from browser device local time.
+2. On-air data is loaded from P-Layer via `/api/clock-info`.
+3. Server state (`running`/`error`/`stopped`) and startup error text are shown in `Settings -> General -> Studio Clock`.
+
+If it does not open on another device:
+
+1. Ensure both devices are in the same local network.
+2. Ensure `Local network` URL is present in `Settings -> General -> Studio Clock`.
+3. Check if port `5380` is already occupied by another app.
+4. Allow inbound connections for P-Layer in firewall/security settings.
+
 ---
 
 ## 8. Save/Load Playlists and Time-Based Auto-Load
@@ -339,6 +384,8 @@ Result:
 
 1. If playback is active, load is seamless (transition to new playlist).
 2. If stopped, playlist loads and starts playback immediately.
+3. Loaded playlist name is shown above `Total`.
+4. For schedule-mask names `YYYY-MM-DD_HH-MM.m3u`, UI shows a human-readable label, for example: `Playlist: Apr 4, 14:00`.
 
 ## Auto-Load by Time (Scheduler)
 
@@ -372,9 +419,22 @@ Result:
 2. Reorder items.
 3. Add `Start/Stop Stream` commands.
 4. See total time and cumulative card timing.
-5. Use `Load playlist`, `Save playlist`, `Clear playlist`.
-6. Use `Compact view`.
-7. Record voice tracks into playlist. Select a track and click `VT Recorder`.
+5. For audio files dropped from Finder, track duration is resolved automatically and immediately included in `Total`.
+6. Use `Load playlist`, `Save playlist`, `Clear playlist`.
+7. Use `Compact view`.
+8. Record voice tracks into playlist. Select a track and click `VT Recorder`.
+
+## Send Playlist from Playlist Editor to Studio Queue
+
+1. Open the required playlist in `Playlist Editor`.
+2. Ensure this playlist is saved or loaded from disk (`Send to Queue` appears only in this case).
+3. Click `Send to Queue` in the left sidebar bottom section.
+
+Result:
+
+1. In Studio, this playlist is appended to the current queue tail (existing queue is not replaced).
+2. If Studio is fully empty and nothing is playing, the sent playlist is loaded and playback starts.
+3. Button briefly shows `Sent` feedback.
 
 ## Break Marker Behavior
 
@@ -428,6 +488,11 @@ This tab sets rotation rules:
 
 If set to `0`, restriction is disabled.
 
+Important:
+
+1. Rotation quality depends directly on category quality.
+2. If categories contain mixed-purpose tracks, separation rules become less effective and generation warnings increase.
+
 ## 10.3 Schedule
 
 Goal:
@@ -453,6 +518,7 @@ In `Generated Playlists`:
 
 1. Double-click row -> open file in Playlist Editor.
 2. Click `x` in row -> delete file from disk.
+3. Schedule-mask playlist names are shown in human-readable format (for example `Playlist: Apr 4, 14:00`).
 
 ## PRO in Rotator
 

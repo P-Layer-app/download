@@ -57,7 +57,7 @@ Below:
 
 Right side:
 
-1. Library (`Tracks` / `Commands`)
+1. Library (`Tracks` / `Playlists` / `Commands`)
 2. Library search
 
 ---
@@ -111,12 +111,15 @@ Important (required):
 2. Set:
    - `Program Output Device` (main on-air output)
    - `Preview Output Device` (Audio Editor preview output)
+   - `Preview Volume` (headphones preview loudness)
 
 Result:
 
 1. Studio player uses Program output.
 2. Audio Editor uses Preview output.
 3. If Preview is not selected or disappears, preview falls back to Program output.
+4. `Preview Volume` affects preview path only (Program output is unchanged).
+5. `Preview Volume` uses a non-linear curve for finer low-level control (`gain = slider^2`).
 
 ## Step 4. Configure Streaming (if needed)
 
@@ -151,7 +154,8 @@ Result:
 
 1. Right panel `Library`.
 2. `Tracks` tab: audio tracks by categories.
-3. `Commands` tab: `Start Stream` and `Stop Stream`.
+3. `Playlists` tab: generated/saved playlists with date-grouped hour grids.
+4. `Commands` tab: `Start Stream` and `Stop Stream`.
 
 ## What You Can Do in Library
 
@@ -164,6 +168,14 @@ Result:
 
 1. If artist is empty or title looks like raw filename with extension, row is dimmed.
 2. `⚠️` icon means non-standard sample rate (not 44.1 kHz).
+
+## Last Played Order in `Tracks`
+
+1. `Last Played` column shows last real playback timestamp (`Day Month HH:MM`, no year).
+2. Track list order follows playback recency:
+   - empty `Last Played` first
+   - oldest played tracks above
+   - most recently played tracks at the bottom.
 
 ---
 
@@ -238,6 +250,13 @@ Result:
 4. `Zoom -> End`
 5. `Zoom` slider
 6. Spacebar starts playback.
+7. Hotkeys:
+   - `1` -> `Zoom -> Start`
+   - `2` -> `Show Full`
+   - `3` -> `Zoom -> End`
+   - `Q` -> set `Start`
+   - `W` -> set `Intro`
+   - `E` -> set `Fade Out`.
 
 ## Crossfade and Intelligent Crossfade (Settings -> General)
 
@@ -309,14 +328,15 @@ Result:
 2. This is needed for integration with macOS-aware apps (for example Audio Hijack), so they can detect the current track and progress automatically.
 3. On full playback stop (`Eject`/stop), system now-playing state is cleared.
 
-## External Now Playing Metadata Files
+## External Now Playing Metadata Files (PRO)
 
-1. On confirmed start of a music track, P-Layer updates:
+1. On confirmed start of a music track with an active PRO license, P-Layer updates:
    - `~/Music/P-Layer/nowplaying.json`
    - `~/Music/P-Layer/CurrentPlaying.txt`
 2. This is needed for external integrations that read metadata from files: OBS overlays, broadcast automation, and custom scripts.
 3. While break-session items are playing, these files are not overwritten; the last music track remains.
-4. Formats:
+4. If PRO is not active, `nowplaying.json` and `CurrentPlaying.txt` are cleared (deleted).
+5. Formats:
    - `nowplaying.json`
      ```json
      {
@@ -411,7 +431,9 @@ Result:
 ## How to Open
 
 1. Click `Playlist` in Studio left menu.
-2. Or double-click row in `Rotator -> Schedule -> Generated Playlists`.
+2. Or open from `Rotator -> Schedule -> Generated Playlists`:
+   - double-click a filled hour cell (scheduled grid)
+   - or double-click a standalone row.
 
 ## What You Can Do
 
@@ -441,6 +463,14 @@ Result:
 1. If playlist contains `[BREAK:N]`, it is shown as `Break N` card.
 2. Break card is visible but not editable as regular track (does not open Track Editor).
 3. Drag-reorder and delete are still available.
+
+## `Playlists` Tab Behavior (inside Playlist Editor Library)
+
+1. Scheduled playlists are grouped by date and shown as a 24-hour grid (8x3).
+2. Filled hour cells open playlist on click.
+3. Files without scheduled date-time remain listed as standalone rows (open by double-click).
+4. Scroll position and last selected playlist stay preserved while the Playlist Editor window is open.
+5. Date group labels follow user system locale.
 
 ---
 
@@ -483,7 +513,7 @@ Extra actions:
 
 This tab sets rotation rules:
 
-1. Per category: `TRACK SEPARATION MIN`.
+1. Per category: `TRACK SEPARATION MIN` (repeat is evaluated by `artist + title`, not by file `track.id`).
 2. Global: `ARTIST SEPARATION (MIN)`.
 
 If set to `0`, restriction is disabled.
@@ -492,6 +522,18 @@ Important:
 
 1. Rotation quality depends directly on category quality.
 2. If categories contain mixed-purpose tracks, separation rules become less effective and generation warnings increase.
+3. Tracks with both empty `artist` and `title` are ignored by Rotator generation.
+4. `artist + title` matching uses: Unicode normalization (NFKC), `trim`, repeated-whitespace collapse, and case-insensitive comparison.
+
+Advanced Tools (`Rotator -> Categories`):
+
+1. `Shuffle` — shuffles the selected category queue (`rotation_position`) and can significantly change rotation flow.
+2. `Reset History` — clears only rotator scheduling history (`last_scheduled`) for all tracks.
+3. `Reset History` does not modify:
+   - `last_played`
+   - `rotation_position`
+   - track metadata
+4. Use `Reset History` after bulk metadata edits, category restructuring, or separation-rule changes.
 
 ## 10.3 Schedule
 
@@ -516,9 +558,11 @@ Result:
 
 In `Generated Playlists`:
 
-1. Double-click row -> open file in Playlist Editor.
-2. Click `x` in row -> delete file from disk.
-3. Schedule-mask playlist names are shown in human-readable format (for example `Playlist: Apr 4, 14:00`).
+1. Scheduled files are grouped by date and displayed as a 24-hour grid (8x3).
+2. Double-click a filled hour cell (or focus it and press `Enter`) -> open file in Playlist Editor.
+3. Click `x` in a filled cell (or in a standalone row) -> delete file from disk.
+4. Files without schedule date-time are shown in fallback standalone rows and open by double-click.
+5. Date group labels follow user system locale; schedule-mask playlist names are still shown in human-readable form (for example `Playlist: Apr 4, 14:00`).
 
 ## PRO in Rotator
 
@@ -712,6 +756,7 @@ Important:
 
 1. Preview output uses `Preview Output Device` from `Settings -> General`.
 2. If preview device is unavailable, playback falls back to `Program Output Device`.
+3. Preview loudness is controlled by `Preview Volume` in `Settings -> General` and updates immediately during playback.
 
 ## Save (SAVE)
 

@@ -14,15 +14,18 @@ P-Layer is a professional broadcast automation application designed for radio st
 P-Layer allows you to:
 
 1. Run live playback from a queue (Studio).
-2. Store and edit a categorized music library.
+2. Store a categorized library (using connected folders in Settings).
 3. Mark up tracks in Audio Editor (Start / Intro / Fade Out).
 4. Auto-load playlists by time.
 5. Generate playlists in Rotator (PRO).
 6. Edit existing playlists or create playlists manually, including adding/removing items.
 7. Plan ad/service break filling in Planner (PRO).
-8. Start/stop stream output (Icecast/Shoutcast) manually or by playlist commands.
+8. Start/stop Icecast stream output manually or by playlist commands.
 9. Record voice tracks and save them to library or directly into playlist (PRO).
 10. Play voice tracks over music tracks with automatic positioning on intro or at track end.
+11. Run Radio Clock on the same computer or over local network.
+12. Send Radio Clock current track, time, date, and loaded active playlist data (PRO).
+13. Use the `GO LIVE` queue command to stop further playback and switch to live-show mode.
 
 ---
 
@@ -43,6 +46,7 @@ Top center:
 
 1. Player controls (`Play`, `Pause`, `Next`, `Eject`)
 2. `STREAM OFF/ON` button
+3. Station branding logo slot (PRO)
 
 Below:
 
@@ -57,7 +61,7 @@ Below:
 
 Right side:
 
-1. Library (`Tracks` / `Playlists` / `Commands`)
+1. Library (`Tracks` / `Playlists` / `Commands` / `Break Schedule`)
 2. Library search
 
 ---
@@ -69,7 +73,7 @@ Right side:
 1. Click `Settings` in the left sidebar.
 2. Open the `General` tab.
 3. In `Playlist Folder`, click `Select Folder`.
-4. Choose your working `.m3u` folder.
+4. Choose your working folder for storing playlists.
 
 Result:
 
@@ -85,16 +89,17 @@ Result:
 2. In `Add New Category`, fill:
    - `Category Name`
    - color
-   - `Category Path` via `Select Folder` (recommended)
+   - `Category Path` via `Select Folder`
 3. Optional flags:
-   - `Play Over` for voice tracks
-   - `Non Music` for ad/news/service categories used in Planner.
+   - `Play Over` for voice tracks (this allows tracks from this folder to play over other music tracks)
+   - `Non Music` for filtering ad/news/service categories in Planner.
 4. Click `Add`.
 
 Result:
 
 1. Category appears in categories list.
 2. Tracks from that folder appear in Library.
+3. While the category is being created, `Add` is temporarily disabled and shows `Adding...`.
 
 Important (required):
 
@@ -104,6 +109,18 @@ Important (required):
 4. Do not fill one `Category Path` with nested subfolders that have different rotation purposes.
 5. Keep only curated tracks in each category folder that are intended for rotation.
 6. After you start daily use, avoid changing `Category Path`; creating a new category and reconfiguring rotation is safer.
+
+Recommended folder structure:
+
+```text
+Music
+|-- Pop
+|-- Rock
+|-- Jazz
+`-- Slow
+```
+
+Add `Pop`, `Rock`, `Jazz`, and `Slow` as separate categories. Do not add the parent `Music` folder as one single category if it contains mixed rotation groups.
 
 ## Step 3. Configure Audio Outputs
 
@@ -124,19 +141,29 @@ Result:
 ## Step 4. Configure Streaming (if needed)
 
 1. `Settings -> Streaming`.
-2. Enable `Enable streaming`.
-3. Fill:
-   - `Server type`
+2. Streaming is currently Icecast-only. Shoutcast is temporarily unavailable.
+3. Enable `Enable streaming`.
+4. Fill:
    - `Host`
    - `Port`
    - `Mountpoint / Stream ID`
    - `Username`
    - `Password`
    - `Bitrate`
+5. In `Metadata`, optionally enable `Use external metadata output` (available in PRO only).
+6. Open `External Metadata` tab and fill:
+   - `Host`
+   - `Port`
+   - `Mount`
+   - `Admin Username`
+   - `Admin Password`
+7. Click `Send Test Metadata` to verify endpoint access.
 
 Result:
 
-1. `STREAM` button in Studio can start real stream output.
+1. `STREAM` button in Studio can start real Icecast stream output.
+2. If `Use external metadata output` is enabled and PRO is active, metadata is sent through the external HTTP route configured in `Settings -> External Metadata`.
+3. Without PRO, this toggle is locked and a PRO warning is shown.
 
 ## Step 5. Exit Settings
 
@@ -155,7 +182,8 @@ Result:
 1. Right panel `Library`.
 2. `Tracks` tab: audio tracks by categories.
 3. `Playlists` tab: generated/saved playlists with date-grouped hour grids.
-4. `Commands` tab: `Start Stream` and `Stop Stream`.
+4. `Commands` tab: `Start Stream`, `Stop Stream`, `GO LIVE 🛑 Next stop`.
+5. `Break Schedule` tab: read-only view of planned breaks for selected date (grouped by hour and break).
 
 ## What You Can Do in Library
 
@@ -176,6 +204,7 @@ Result:
    - empty `Last Played` first
    - oldest played tracks above
    - most recently played tracks at the bottom.
+3. Click the `Last Played` column header to manually reload and reapply the same order. The column does not toggle to descending order.
 
 ---
 
@@ -224,8 +253,8 @@ Result:
 ## Marker Meanings
 
 1. `Start` — playback start point inside file.
-2. `Intro` — intro end point.
-3. `Fade Out` — exact point where next track should start.
+2. `Intro` — intro end point (the end of musical intro where a voice track will be positioned if attached).
+3. `Fade Out` — exact point where next track should start (if not set, transition follows Crossfade settings).
 
 ## Basic Marking Scenario
 
@@ -263,9 +292,10 @@ Result:
 `Crossfade (sec)`:
 
 1. This is the overlap duration between two tracks.
-2. In P-Layer, the next track does not fade in; it starts instantly at full level at transition time.
-3. When the second track starts, the first track begins fading out.
-4. `Crossfade` defines how long this tail fade-out lasts.
+2. Available presets include `0.5` seconds for very short tail fade-outs.
+3. In P-Layer, the next track does not fade in; it starts instantly at full level at transition time.
+4. When the second track starts, the first track begins fading out.
+5. `Crossfade` defines how long this tail fade-out lasts.
 
 In other words:
 
@@ -301,18 +331,23 @@ Logic:
 
 1. `STREAM OFF` button:
    - click -> connect to server
-   - statuses: `CONNECTING`, `STREAM ON`, `STREAM ERROR`, `STREAM OFF`
+   - statuses: `CONNECTING`, `RECONNECTING...`, `STREAM ON`, `ERROR: ...`, `STREAM OFF`
 
 Important:
 
 1. If `Enable streaming` is disabled in `Settings -> Streaming`, button shows `DISABLED`.
+2. `STREAM ON` is shown only after the Icecast server accepts the source connection.
+3. If the server rejects the connection or the network fails, the button shows an error reason such as `ERROR: SERVER REJECTED`, `ERROR: CONNECT TIMEOUT`, or `ERROR: NETWORK ERROR`.
+4. Short network drops can trigger automatic reconnect; during this state the button shows `RECONNECTING...`.
 
 ## Playlist Commands
 
 1. In `Library -> Commands`, available:
    - `Start Stream`
    - `Stop Stream`
+   - `GO LIVE 🛑 Next stop`
 2. Drag these commands into queue/playlist.
+3. `GO LIVE 🛑 Next stop` pauses automation at that command point and waits for manual `Play`.
 
 Result:
 
@@ -323,10 +358,6 @@ Result:
 1. During playback, P-Layer publishes current track metadata to macOS system media:
    - `title`
    - `artist`
-   - `album` (if present)
-   - duration and current position
-2. This is needed for integration with macOS-aware apps (for example Audio Hijack), so they can detect the current track and progress automatically.
-3. On full playback stop (`Eject`/stop), system now-playing state is cleared.
 
 ## External Now Playing Metadata Files (PRO)
 
@@ -350,6 +381,49 @@ Result:
      Artist - Title
      ```
 
+## External HTTP Metadata Route for STREAM (PRO)
+
+1. In `Settings -> Streaming -> Metadata`, enable `Use external metadata output`.
+2. Configure endpoint credentials in `Settings -> External Metadata`.
+3. Use `Send Test Metadata` to verify server response in UI before going live.
+4. While stream intent is `ON`, metadata is sent over HTTP to:
+   - `/admin/metadata?mode=updinfo&mount=...&song=...`
+5. In this mode, internal Icecast source/MP3 encoder streaming path is not started.
+6. If full `artist/title` metadata is missing, a safe filename-based fallback is used.
+7. Without an active PRO license, this toggle is unavailable.
+
+## Air Log
+
+1. P-Layer writes a plain-text air log into `~/Music/P-Layer/Logs/`.
+2. One file is created per day:
+   - `airlog_YYYY-MM-DD.txt`
+3. The log contains only real playback facts in start order, for example:
+   - `PLAY`
+   - `VO`
+   - `SKIP`
+   - `BREAK start`
+   - `BREAK end`
+4. Break items are indented in the file for readability.
+5. Paths are written relative to a connected library folder when possible; otherwise the absolute path is used.
+
+Open from menu:
+
+1. `Help -> Open Today's Air Log` — opens today's file and creates it if needed.
+2. `Help -> Open Air Log Folder` — opens the whole Logs folder.
+
+## Station Branding Logo (PRO)
+
+1. In Studio, click the logo slot on the right side of the player header.
+2. With an active PRO license, select a `png`, `jpg`, or `jpeg` logo file.
+3. The app copies the selected file into its own user-data branding folder; the original file path is not stored.
+
+Result:
+
+1. The custom station logo appears in Studio.
+2. The same custom station logo appears in Studio Clock.
+3. Without PRO, the logo slot stays empty and prompts `Set station logo (PRO)`.
+4. If no licensed custom logo is available, Studio Clock hides the logo area instead of showing the app logo.
+
 ## Studio Clock in Browser (LAN)
 
 What it is:
@@ -372,6 +446,7 @@ What clock page shows:
 1. Circular studio clock UI.
 2. Current time, weekday, and date.
 3. `On Air` current track, `Next` track, and active playlist.
+4. Custom station logo when PRO branding is configured.
 
 Important:
 
@@ -439,12 +514,13 @@ Result:
 
 1. Build playlist via drag&drop from Library.
 2. Reorder items.
-3. Add `Start/Stop Stream` commands.
+3. Add `Start Stream`, `Stop Stream`, and `GO LIVE 🛑 Next stop` commands.
 4. See total time and cumulative card timing.
 5. For audio files dropped from Finder, track duration is resolved automatically and immediately included in `Total`.
 6. Use `Load playlist`, `Save playlist`, `Clear playlist`.
 7. Use `Compact view`.
 8. Record voice tracks into playlist. Select a track and click `VT Recorder`.
+9. If an opened playlist references a local audio file that no longer exists, the card stays visible with a `File missing` badge so it can be removed or re-added intentionally.
 
 ## Send Playlist from Playlist Editor to Studio Queue
 
@@ -478,11 +554,12 @@ Result:
 
 Open with `Rotator` button in Studio.
 
-Rotator has 3 tabs:
+Rotator has 4 tabs:
 
 1. `Clock Editor`
 2. `Categories`
 3. `Schedule`
+4. `Generation Log`
 
 ## 10.1 Clock Editor
 
@@ -508,32 +585,36 @@ Extra actions:
 1. `New` — new unsaved draft.
 2. `Delete` — delete selected clock.
 3. In `BREAKS`, you can set custom names for Break1..Break5.
+4. In `BREAKS`, each Break1..Break5 also has `Allow crossfade`:
+   - enabled -> regular break crossfade/fixed overlap may be used for items inside that break
+   - disabled -> break items switch without crossfade
+5. Smart silence crossfade is still not used inside break sessions.
 
 ## 10.2 Categories
 
 This tab sets rotation rules:
 
-1. Per category: `TRACK SEPARATION MIN` (repeat is evaluated by `artist + title`, not by file `track.id`).
+1. Per category: `TRACK SEPARATION MIN` (repeat is evaluated by `artist + title`).
 2. Global: `ARTIST SEPARATION (MIN)`.
 
 If set to `0`, restriction is disabled.
 
 Important:
 
-1. Rotation quality depends directly on category quality.
-2. If categories contain mixed-purpose tracks, separation rules become less effective and generation warnings increase.
+1. Rotation quality depends directly on the number of tracks in each category and separation settings.
+2. If tracks in a category have missing, swapped, or incorrect `artist` / `title` fields, generation errors will appear in Rotator.
 3. Tracks with both empty `artist` and `title` are ignored by Rotator generation.
 4. `artist + title` matching uses: Unicode normalization (NFKC), `trim`, repeated-whitespace collapse, and case-insensitive comparison.
 
 Advanced Tools (`Rotator -> Categories`):
 
-1. `Shuffle` — shuffles the selected category queue (`rotation_position`) and can significantly change rotation flow.
+1. `Shuffle` — shuffles the selected category queue (`rotation_position`) and can significantly change rotation flow. Recommended if you just added tracks and they are sorted alphabetically; do it once before generation.
 2. `Reset History` — clears only rotator scheduling history (`last_scheduled`) for all tracks.
 3. `Reset History` does not modify:
    - `last_played`
    - `rotation_position`
    - track metadata
-4. Use `Reset History` after bulk metadata edits, category restructuring, or separation-rule changes.
+4. Use `Reset History` if you spent a long time testing/tuning the app and accumulated many past rotations; before switching to production flow, it is recommended to clear history once.
 
 ## 10.3 Schedule
 
@@ -564,6 +645,24 @@ In `Generated Playlists`:
 4. Files without schedule date-time are shown in fallback standalone rows and open by double-click.
 5. Date group labels follow user system locale; schedule-mask playlist names are still shown in human-readable form (for example `Playlist: Apr 4, 14:00`).
 
+## 10.4 Generation Log
+
+Goal:
+
+1. Inspect detailed track-selection history from the latest `Generate` run.
+
+What it shows:
+
+1. `Entries`, `Selected`, and `Skipped` counters.
+2. Per-category `cycle depth` (how many unique tracks were used vs available).
+3. Skip reasons for rejected candidates (for example `track separation` or `artist separation`).
+
+Controls:
+
+1. `CATEGORY` filter for one category or `All categories`.
+2. `VIEW -> Hourly stream` for time-ordered generation flow by hour.
+3. `VIEW -> Category track line` for category-focused selected-track timelines.
+
 ## PRO in Rotator
 
 Rotator generation requires PRO.
@@ -588,23 +687,27 @@ Planner is available in free version, but break content fill in runtime playback
 
 Left side:
 
-1. `Planner Grid` (Break1..Break5 x 24 hours)
-2. `Break Editor` (selected slot content)
+1. Top: `Planner Grid` (Break1..Break5 x 24 hours)
+2. Bottom split area:
+   - `Break Editor` (editable selected slot content)
+   - `Scheduled Breaks` (read-only selected-day overview grouped by hour and break)
 
 Right side:
 
-1. Library filtered to categories with `Non Music` flag.
+1. Library filtered to categories with `Non Music` flag so music categories not used for planning do not interfere.
 
 ## How to Fill a Slot
 
 1. Select date (`Date`, `Today`, `Copy Prev Day`).
-2. Click a track in right library (it becomes selected).
+2. Click a track in right library (it becomes selected in green and shows `Add mode` hint).
 3. Click target cell in grid (hour + break).
 
 Result:
 
 1. Track is added to that slot.
 2. Item appears in `Break Editor -> Planned Items`.
+3. Selected cell in `Planner Grid` is clearly highlighted.
+4. Matching break in `Scheduled Breaks` is highlighted; if it is out of view, the list auto-scrolls to it.
 
 ## Change Order Inside Slot
 
@@ -661,8 +764,9 @@ Queue shows dedicated break card:
 
 ## Playback Logic
 
-1. Empty break -> skipped.
-2. Non-empty break -> plays items planned in Planner for:
+1. Break content is filled from planned items at playlist load time.
+2. Empty break -> skipped.
+3. Non-empty break -> plays items planned in Planner for:
    - current date
    - current hour
    - matching BreakN.
@@ -670,6 +774,7 @@ Queue shows dedicated break card:
 Important:
 
 1. Smart silence-based crossfade is not applied to tracks played inside break sessions.
+2. If `Allow crossfade` is enabled for that BreakN in `Rotator -> Clock Editor`, break items can use regular crossfade timing; if disabled, transitions inside that break stay hard-switched.
 
 ---
 
@@ -689,7 +794,7 @@ How the system knows a track has an intro:
 
 1. Intro must be marked in advance in `Audio Editor`.
 2. Put `Intro` marker at the point where instrumental intro ends and vocals begin.
-3. If `Intro` is not marked, the track is treated as having no intro.
+3. If `Intro` is not marked, the track is treated as having no intro. In this case the voice track is played at the end of this track.
 
 How to attach voice track manually:
 
@@ -700,7 +805,7 @@ How to attach voice track manually:
 Result:
 
 1. Card shows `🎤` badge.
-2. Voice track plays over the intro.
+2. Voice track plays over the intro, or at track end if intro is missing.
 3. Voice track ends exactly at the point where vocals begin (`Intro` marker).
 
 How to detach:

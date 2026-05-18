@@ -9,6 +9,18 @@ P-Layer is a professional broadcast automation application designed for radio st
 ![P-Layer Screenshot](screen3.png)
 ---
 
+# P-Layer: Full User Manual (EN)
+
+Manual version: based on app functionality in release `0.9.1` (May 18, 2026).
+
+This is a practical guide in the format:
+
+`Action -> where to click -> what result you get`.
+
+No internal technical implementation details.
+
+---
+
 ## 1. What This App Does
 
 P-Layer allows you to:
@@ -151,19 +163,26 @@ Result:
    - `Password`
    - `Bitrate`
 5. In `Metadata`, optionally enable `Use external metadata output` (available in PRO only).
-6. Open `External Metadata` tab and fill:
+6. Open `Advanced -> Streaming Integration` and fill:
    - `Host`
    - `Port`
    - `Mount`
    - `Admin Username`
    - `Admin Password`
 7. Click `Send Test Metadata` to verify endpoint access.
+8. Optional (PRO): open `Advanced -> MIDI Control`.
+9. In `MIDI Control`:
+   - turn on `Enable MIDI`
+   - select a MIDI input device
+   - click `Learn` for `Play`, `Pause`, and `Next`, then move/press the desired hardware control
+10. Use `Clear mapping` to reset MIDI transport mappings if needed.
 
 Result:
 
 1. `STREAM` button in Studio can start real Icecast stream output.
-2. If `Use external metadata output` is enabled and PRO is active, metadata is sent through the external HTTP route configured in `Settings -> External Metadata`.
+2. If `Use external metadata output` is enabled and PRO is active, metadata is sent through the external HTTP route configured in `Settings -> Advanced -> Streaming Integration`.
 3. Without PRO, this toggle is locked and a PRO warning is shown.
+4. Without PRO, `Enable MIDI` is also locked in `Advanced -> MIDI Control` and shows `Requires PRO license`.
 
 ## Step 5. Exit Settings
 
@@ -364,10 +383,12 @@ Result:
 1. On confirmed start of a music track with an active PRO license, P-Layer updates:
    - `~/Music/P-Layer/nowplaying.json`
    - `~/Music/P-Layer/CurrentPlaying.txt`
-2. This is needed for external integrations that read metadata from files: OBS overlays, broadcast automation, and custom scripts.
-3. While break-session items are playing, these files are not overwritten; the last music track remains.
-4. If PRO is not active, `nowplaying.json` and `CurrentPlaying.txt` are cleared (deleted).
-5. Formats:
+   - `~/Music/P-Layer/CurrentPlayingMetadata.txt`
+2. This is needed for external integrations that read metadata from files: OBS overlays, broadcast automation, external encoders/readers such as Audio Hijack, and custom scripts.
+3. All three files are updated from the same confirmed now playing metadata event.
+4. While break-session items are playing, these files are not overwritten; the last music track remains.
+5. If PRO is not active, `nowplaying.json`, `CurrentPlaying.txt`, and `CurrentPlayingMetadata.txt` are cleared (deleted).
+6. Formats:
    - `nowplaying.json`
      ```json
      {
@@ -380,11 +401,20 @@ Result:
      ```text
      Artist - Title
      ```
+   - `CurrentPlayingMetadata.txt`
+     ```text
+     Title: Title
+     Artist: Artist
+     ```
+7. Intended use:
+   - `CurrentPlaying.txt` is a simple human-readable text line.
+   - `CurrentPlayingMetadata.txt` is a structured text format for external metadata readers.
+   - `nowplaying.json` is a machine/API format.
 
 ## External HTTP Metadata Route for STREAM (PRO)
 
 1. In `Settings -> Streaming -> Metadata`, enable `Use external metadata output`.
-2. Configure endpoint credentials in `Settings -> External Metadata`.
+2. Configure endpoint credentials in `Settings -> Advanced -> Streaming Integration`.
 3. Use `Send Test Metadata` to verify server response in UI before going live.
 4. While stream intent is `ON`, metadata is sent over HTTP to:
    - `/admin/metadata?mode=updinfo&mount=...&song=...`
@@ -477,10 +507,17 @@ If it does not open on another device:
 
 Result:
 
-1. If playback is active, load is seamless (transition to new playlist).
-2. If stopped, playlist loads and starts playback immediately.
-3. Loaded playlist name is shown above `Total`.
-4. For schedule-mask names `YYYY-MM-DD_HH-MM.m3u`, UI shows a human-readable label, for example: `Playlist: Apr 4, 14:00`.
+1. If playback is active and playlist contains `#START:NOW`, load is seamless (transition to new playlist).
+2. If playback is active and playlist contains `#START:WAIT`, current track continues and the loaded queue starts on the next transition.
+3. If stopped, playlist loads and starts playback immediately.
+4. Loaded playlist name is shown above `Total`.
+5. For schedule-mask names `YYYY-MM-DD_HH-MM.m3u`, UI shows a human-readable label, for example: `Playlist: Apr 4, 14:00`.
+
+Playlist start mode (`#START`) notes:
+
+1. Valid values are `NOW` and `WAIT`.
+2. If `#START` is missing or invalid, app defaults to `NOW`.
+3. The same `#START` behavior applies to scheduler auto-load.
 
 ## Auto-Load by Time (Scheduler)
 
@@ -521,6 +558,10 @@ Result:
 7. Use `Compact view`.
 8. Record voice tracks into playlist. Select a track and click `VT Recorder`.
 9. If an opened playlist references a local audio file that no longer exists, the card stays visible with a `File missing` badge so it can be removed or re-added intentionally.
+10. In save dialog, use `Start immediately` checkbox:
+    - checked -> playlist is saved with `#START:NOW`
+    - unchecked -> playlist is saved with `#START:WAIT`
+11. When loading an existing playlist, Playlist Editor reads `#START` and keeps this mode for next saves unless changed.
 
 ## Send Playlist from Playlist Editor to Studio Queue
 
@@ -630,7 +671,10 @@ Steps:
    - `All 24 hours`
    - `Selected hours`
    - `Standalone playlist`
-4. Click `Generate`.
+4. Set `Start immediately`:
+   - enabled -> generated files use `#START:NOW`
+   - disabled -> generated files use `#START:WAIT`
+5. Click `Generate`.
 
 Result:
 

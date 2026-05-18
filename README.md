@@ -13,12 +13,6 @@ P-Layer is a professional broadcast automation application designed for radio st
 
 Manual version: based on app functionality in release `0.9.1` (May 18, 2026).
 
-This is a practical guide in the format:
-
-`Action -> where to click -> what result you get`.
-
-No internal technical implementation details.
-
 ---
 
 ## 1. What This App Does

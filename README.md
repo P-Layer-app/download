@@ -9,9 +9,20 @@ P-Layer is a professional broadcast automation application designed for radio st
 ![P-Layer Screenshot](screen3.png)
 ---
 
-# P-Layer: Full User Manual (EN)
 
-Manual version: based on app functionality in release `0.9.1` (May 18, 2026).
+Manual version: based on app functionality in release `1.2.0` (May 30, 2026).
+
+## Update 1.2.0 (May 30, 2026)
+
+1. `Rotator` now includes `Week Grid` for assigning different clocks by weekday and hour.
+2. `Week Grid` is now a single project-wide grid with no grid list, no active-grid selector, and no create/delete/duplicate flow.
+3. `Rotator -> Schedule` now uses only `Default Clock` and `Use weekly grid`.
+4. `Week Grid` now supports bulk editing: direct cell assignment, drag-fill across multiple cells, and right-click bulk actions for day/hour ranges.
+5. `Break1..Break5` are now global station break settings with active state, approximate start minute, custom name, and `Allow crossfade`.
+6. When break minutes change, break-slot positions are recalculated automatically in all clocks.
+7. Planner now shows only active station breaks.
+8. If a break does not exist in the resolved clock for the selected date/hour, that Planner cell is unavailable for assignment.
+9. Planner break rows now show approximate break start time next to the break label.
 
 ---
 
@@ -21,7 +32,7 @@ P-Layer allows you to:
 
 1. Run live playback from a queue (Studio).
 2. Store a categorized library (using connected folders in Settings).
-3. Mark up tracks in Audio Editor (Start / Intro / Fade Out).
+3. Mark up tracks in Audio Editor (Start / Intro / Hook / Fade Out).
 4. Auto-load playlists by time.
 5. Generate playlists in Rotator (PRO).
 6. Edit existing playlists or create playlists manually, including adding/removing items.
@@ -44,7 +55,7 @@ Left sidebar:
 1. `Library`
 2. `Rotator`
 3. `Planner`
-4. `Playlist`
+4. `Playlist Editor`
 5. `Settings`
 6. `VT Recorder`
 
@@ -67,7 +78,7 @@ Below:
 
 Right side:
 
-1. Library (`Tracks` / `Playlists` / `Commands` / `Break Schedule`)
+1. Library (`Tracks` / `Commands` / `Break Schedule`)
 2. Library search
 
 ---
@@ -106,6 +117,8 @@ Result:
 1. Category appears in categories list.
 2. Tracks from that folder appear in Library.
 3. While the category is being created, `Add` is temporarily disabled and shows `Adding...`.
+4. You can later change existing category color directly from the category list.
+5. Color change updates category visuals without restarting or reapplying playback/audio settings.
 
 Important (required):
 
@@ -135,6 +148,8 @@ Add `Pop`, `Rock`, `Jazz`, and `Slow` as separate categories. Do not add the par
    - `Program Output Device` (main on-air output)
    - `Preview Output Device` (Audio Editor preview output)
    - `Preview Volume` (headphones preview loudness)
+   - `Live Input Device` (external source for live broadcasting, PRO)
+3. For live takeover (PRO), enable `Enable Live Input takeover` when needed.
 
 Result:
 
@@ -143,6 +158,7 @@ Result:
 3. If Preview is not selected or disappears, preview falls back to Program output.
 4. `Preview Volume` affects preview path only (Program output is unchanged).
 5. `Preview Volume` uses a non-linear curve for finer low-level control (`gain = slider^2`).
+6. If `Enable Live Input takeover` is off, `GO LIVE` keeps the previous behavior and only stops automation playback.
 
 ## Step 4. Configure Streaming (if needed)
 
@@ -194,9 +210,9 @@ Result:
 
 1. Right panel `Library`.
 2. `Tracks` tab: audio tracks by categories.
-3. `Playlists` tab: generated/saved playlists with date-grouped hour grids.
-4. `Commands` tab: `Start Stream`, `Stop Stream`, `GO LIVE 🛑 Next stop`.
-5. `Break Schedule` tab: read-only view of planned breaks for selected date (grouped by hour and break).
+3. `Commands` tab: `Start Stream`, `Stop Stream`, `GO LIVE 🛑 Next stop`.
+4. `Break Schedule` tab: read-only view of planned breaks for selected date (grouped by hour and break).
+5. In `Playlist Editor`, `Playlists` tab shows generated/saved playlists with date-grouped hour grids.
 
 ## What You Can Do in Library
 
@@ -209,6 +225,7 @@ Result:
 
 1. If artist is empty or title looks like raw filename with extension, row is dimmed.
 2. `⚠️` icon means non-standard sample rate (not 44.1 kHz).
+3. A subtle dot in the Hook column means both hook markers are set for that track.
 
 ## Last Played Order in `Tracks`
 
@@ -244,6 +261,12 @@ Supported formats: `mp3`, `wav`, `flac`, `m4a` (drag&drop also supports `ogg`).
 
 1. Click `Compact view` to toggle compact queue cards.
 
+## Hook Playback Per Queue Item
+
+1. If a track has both hook markers, card shows `Play Hook`.
+2. Click `Play Hook` to toggle hook-only playback for that queue item.
+3. When enabled, playback for that item is limited to the `hook_start -> hook_end` segment.
+
 ## Edit Track from Queue
 
 1. Double-click track card -> Audio Editor.
@@ -267,16 +290,18 @@ Result:
 
 1. `Start` — playback start point inside file.
 2. `Intro` — intro end point (the end of musical intro where a voice track will be positioned if attached).
-3. `Fade Out` — exact point where next track should start (if not set, transition follows Crossfade settings).
+3. `Hook` — hook segment (`H START` + `H END`) used by `Play Hook` mode in queue cards.
+4. `Fade Out` (shown as `End` in marker controls) — exact point where next track should start (if not set, transition follows Crossfade settings).
 
 ## Basic Marking Scenario
 
 1. Start playback with `Play`.
 2. At required position, click `Start`.
 3. At intro end, click `Intro`.
-4. At transition point, click `Fade`.
-5. Fine-adjust with `←/→` (50 ms step).
-6. Click `Save`.
+4. Optional: set `Hook` start/end around your desired hook segment.
+5. At transition point, click `End`.
+6. Fine-adjust active marker with `←/→` (50 ms step).
+7. Click `Save`.
 
 Result:
 
@@ -287,28 +312,36 @@ Result:
 ## Useful Buttons
 
 1. `Undo`
-2. `Zoom -> Start`
-3. `Show Full`
-4. `Zoom -> End`
-5. `Zoom` slider
-6. Spacebar starts playback.
-7. Hotkeys:
-   - `1` -> `Zoom -> Start`
-   - `2` -> `Show Full`
-   - `3` -> `Zoom -> End`
-   - `Q` -> set `Start`
-   - `W` -> set `Intro`
-   - `E` -> set `Fade Out`.
+2. `View Full`
+3. `View Start`
+4. `View Intro`
+5. `View Hook`
+6. `View End`
+7. Spacebar starts playback.
+8. Hotkeys:
+   - `1` -> `View Full`
+   - `2` -> `View Start`
+   - `3` -> `View Intro`
+   - `4` -> `View Hook`
+   - `5` -> `View End`
+   - `S` -> set `Start`
+   - `I` -> set `Intro`
+   - `H` -> set `Hook`
+   - `E` -> set `End` (`Fade Out`)
+   - `Backspace` -> delete active marker
+   - `Escape` -> undo last marker placement
+   - `Ctrl/Cmd + Z` -> Undo history
 
 ## Crossfade and Intelligent Crossfade (Settings -> General)
 
 `Crossfade (sec)`:
 
 1. This is the overlap duration between two tracks.
-2. Available presets include `0.5` seconds for very short tail fade-outs.
+2. Available presets: `0`, `0.5`, `1`, `2`, `3` seconds.
 3. In P-Layer, the next track does not fade in; it starts instantly at full level at transition time.
 4. When the second track starts, the first track begins fading out.
 5. `Crossfade` defines how long this tail fade-out lasts.
+6. For very short tracks, runtime can automatically reduce overlap so crossfade stays within a safe part of the track.
 
 In other words:
 
@@ -360,7 +393,8 @@ Important:
    - `Stop Stream`
    - `GO LIVE 🛑 Next stop`
 2. Drag these commands into queue/playlist.
-3. `GO LIVE 🛑 Next stop` pauses automation at that command point and waits for manual `Play`.
+3. `GO LIVE 🛑 Next stop` pauses automation at that command point, puts the player into `LIVE MODE`, and waits for manual `Play`.
+4. If `Enable Live Input takeover` is enabled and `Live Input Device` is selected (PRO), external live input starts after automation is fully stopped.
 
 Result:
 
@@ -536,7 +570,7 @@ Result:
 
 ## How to Open
 
-1. Click `Playlist` in Studio left menu.
+1. Click `Playlist Editor` in Studio left menu.
 2. Or open from `Rotator -> Schedule -> Generated Playlists`:
    - double-click a filled hour cell (scheduled grid)
    - or double-click a standalone row.
@@ -589,41 +623,52 @@ Result:
 
 Open with `Rotator` button in Studio.
 
-Rotator has 4 tabs:
+Rotator has 5 tabs:
 
 1. `Clock Editor`
 2. `Categories`
-3. `Schedule`
-4. `Generation Log`
+3. `Week Grid`
+4. `Schedule`
+5. `Generation Log`
 
 ## 10.1 Clock Editor
 
 Goal:
 
-1. Build hour template (clock) from categories and break markers.
+1. Build hour template (clock) from categories.
 2. Add repeating elements such as jingles.
+3. Configure global station breaks that apply to all clocks.
 
 How to create a clock:
 
 1. Enter name in `CLOCK NAME`.
 2. Drag categories from right `CATEGORIES` panel into `CLOCK SLOTS`.
-3. Add break slots from `BREAKS` panel if needed.
-4. Reorder slots with drag&drop.
+3. Reorder category slots with drag&drop.
+4. Configure global break settings in `BREAKS`.
 5. Click `Save`.
 
 Result:
 
 1. Clock is saved and available in Schedule generation.
+2. Active global breaks are automatically used across all clocks.
 
 Extra actions:
 
 1. `New` — new unsaved draft.
 2. `Delete` — delete selected clock.
-3. In `BREAKS`, you can set custom names for Break1..Break5.
-4. In `BREAKS`, each Break1..Break5 also has `Allow crossfade`:
+3. Breaks are no longer drag-positioned manually inside the clock.
+4. In `BREAKS`, each Break1..Break5 has:
+   - active checkbox (turns that break on or off globally for the whole station)
+   - start-minute field in `:00`, `:15`, `:30` format
+   - custom name
+   - `Allow crossfade`
+5. `These positions apply to all clocks.` means break timing and active state are global.
+6. If you change a break minute, the app automatically recalculates its position in all clocks.
+7. `Allow crossfade`:
    - enabled -> regular break crossfade/fixed overlap may be used for items inside that break
    - disabled -> break items switch without crossfade
-5. Smart silence crossfade is still not used inside break sessions.
+8. Smart silence crossfade is still not used inside break sessions.
+9. Clock wheel now shows adaptive category labels and narrow break wedges for clearer break boundaries.
 
 ## 10.2 Categories
 
@@ -651,7 +696,43 @@ Advanced Tools (`Rotator -> Categories`):
    - track metadata
 4. Use `Reset History` if you spent a long time testing/tuning the app and accumulated many past rotations; before switching to production flow, it is recommended to clear history once.
 
-## 10.3 Schedule
+## 10.3 Week Grid
+
+Goal:
+
+1. Assign different clocks to different weekdays and hours.
+
+How to use it:
+
+1. Open `Week Grid`.
+2. Click a cell and choose a clock.
+3. To fill several cells at once, drag across the required range.
+4. For bulk actions by day or hour, right-click the day header or hour header.
+5. Click `Save`.
+
+Result:
+
+1. Enabled `Week Grid` defines which clock is used for each hour of the week.
+2. Empty `Week Grid` cells do not cause errors: those hours fall back to `Default Clock`.
+3. Grid edits are used after you save them.
+
+Bulk actions:
+
+1. On a day header:
+   - set one clock for the whole day
+   - copy one day to another day
+   - clear the whole day
+2. On an hour header:
+   - set one clock for that hour on all days
+   - set one clock for that hour only on `Mon-Fri`
+   - set one clock for that hour only on `Sat-Sun`
+   - clear those ranges
+3. On a cell:
+   - apply that cell's clock to the whole day
+   - apply that cell's clock to that hour for `Mon-Fri`
+   - apply that cell's clock to that hour for all days
+
+## 10.4 Schedule
 
 Goal:
 
@@ -659,21 +740,24 @@ Goal:
 
 Steps:
 
-1. Select `CLOCK TEMPLATE`.
-2. Select `DATE`.
-3. Select `HOURS` mode:
+1. Select `DEFAULT CLOCK`.
+2. Enable `Use weekly grid` if needed.
+3. Select `DATE`.
+4. Select `HOURS` mode:
    - `All 24 hours`
    - `Selected hours`
    - `Standalone playlist`
-4. Set `Start immediately`:
+5. Set `Start immediately`:
    - enabled -> generated files use `#START:NOW`
    - disabled -> generated files use `#START:WAIT`
-5. Click `Generate`.
+6. Click `Generate`.
 
 Result:
 
 1. Files appear in `Generated Playlists`.
 2. `Last Generation Details` shows warnings/details.
+3. If `Use weekly grid` is off, all hours use `Default Clock`.
+4. If `Use weekly grid` is on, each hour uses the clock resolved from `Week Grid`, while empty cells still fall back to `Default Clock`.
 
 In `Generated Playlists`:
 
@@ -683,7 +767,7 @@ In `Generated Playlists`:
 4. Files without schedule date-time are shown in fallback standalone rows and open by double-click.
 5. Date group labels follow user system locale; schedule-mask playlist names are still shown in human-readable form (for example `Playlist: Apr 4, 14:00`).
 
-## 10.4 Generation Log
+## 10.5 Generation Log
 
 Goal:
 
@@ -725,7 +809,7 @@ Planner is available in free version, but break content fill in runtime playback
 
 Left side:
 
-1. Top: `Planner Grid` (Break1..Break5 x 24 hours)
+1. Top: `Planner Grid` (active station breaks only x 24 hours)
 2. Bottom split area:
    - `Break Editor` (editable selected slot content)
    - `Scheduled Breaks` (read-only selected-day overview grouped by hour and break)
@@ -733,6 +817,12 @@ Left side:
 Right side:
 
 1. Library filtered to categories with `Non Music` flag so music categories not used for planning do not interfere.
+
+Important:
+
+1. Planner shows only active breaks from `Rotator -> Clock Editor -> BREAKS`.
+2. Each break row header shows the break label and its approximate start time.
+3. If a break does not exist in the effective clock for the selected date/hour, that cell is unavailable and clicking it does nothing.
 
 ## How to Fill a Slot
 
@@ -812,7 +902,7 @@ Queue shows dedicated break card:
 Important:
 
 1. Smart silence-based crossfade is not applied to tracks played inside break sessions.
-2. If `Allow crossfade` is enabled for that BreakN in `Rotator -> Clock Editor`, break items can use regular crossfade timing; if disabled, transitions inside that break stay hard-switched.
+2. If `Allow crossfade` is enabled for that BreakN in the global `Rotator -> Clock Editor -> BREAKS` settings, break items can use regular crossfade timing; if disabled, transitions inside that break stay hard-switched.
 
 ---
 
